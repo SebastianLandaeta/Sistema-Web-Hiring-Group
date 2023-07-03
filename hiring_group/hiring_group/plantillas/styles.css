@@ -1,0 +1,19 @@
+/* Estilos para el botón */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: royalblue;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    display: none;
+}
+
+#back-to-top:hover {
+    background-color: #555;
+}

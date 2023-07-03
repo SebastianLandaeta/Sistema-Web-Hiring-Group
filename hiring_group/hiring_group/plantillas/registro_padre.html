@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}  {% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container align-self-center">
+        <h2  style="margin-top: 129px;"> {% block title_content %}  {% endblock %} </h2>
+        <form>
+            <div class="form-group">
+                <label for="email"> {% block content %}  {% endblock %} </label>
+                <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" name="email">
+            </div>
+            <div class="form-group">
+                <label for="pwd"> {% block content2 %}  {% endblock %} </label>
+                <input type="password" class="form-control" id="pwd" placeholder="Ingresa tu contraseña" name="pwd">
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+ 
