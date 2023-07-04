@@ -1,0 +1,60 @@
+Colocar el archivo en su directorio central, osea, donde dice "este equipo" para 
+que funcionen la plantillas.
+
+--------------------------------------------------------------------------------
+
+Vista de inicio de sesión: 
+Esta vista permitiría a los usuarios iniciar sesión en la web utilizando 
+su correo electrónico y contraseña. Podría verificar si el correo electrónico y 
+la contraseña son correctos y, de ser así, iniciar sesión al usuario.
+
+Vista de registro: 
+Esta vista permitiría a los usuarios registrarse en la 
+web. Podría solicitar información como el tipo de usuario, el correo 
+electrónico y la contraseña y crear un nuevo registro de usuario en la base de 
+datos.
+
+Vista de lista de ofertas: 
+Esta vista mostraría una lista de todas las ofertas disponibles en la web
+podría permitir a los usuarios filtrar las ofertas por diferentes criterios, 
+como la profesión o el salario ofrecido.
+
+Vista de detalle de oferta: Esta vista mostraría información detallada sobre una
+oferta en particular. Podría incluir información como la descripción del perfil
+del cargo y el salario ofrecido.
+
+Vista de postulación: Esta vista permitiría a los usuarios postularse a una 
+oferta en particular. Podría solicitar información adicional del usuario y crear
+un nuevo registro de postulación en la base de datos.
+
+Vista de lista de postulaciones: Esta vista mostraría una lista de todas las 
+postulaciones realizadas por un usuario en particular. Podría permitir a los 
+usuarios ver el estado de sus postulaciones y obtener más información sobre las 
+ofertas a las que se han postulado.
+
+Vista de contratación: Esta vista permitiría a los usuarios ver información 
+sobre su contratación en una oferta en particular. Podría incluir información 
+como el tiempo de contratación y el salario mensual.
+
+Vista de nómina: Esta vista mostraría información sobre la nómina de una empresa
+en particular. Podría incluir información como el mes y año correspondiente a 
+la nómina y una lista de todos los usuarios contratados involucrados en dicha 
+nómina.
+
+--------------------------------------------------------------------------------
+
+Formato para crear plantillas: 
+    # se abrio el documento en donde esta la plantilla 
+    plantillaExterna = open("C:\Miproyecto\Miproyecto\plantillas/index/html")
+    
+    # cargo el documento en una variable tipo Template
+    template = Template(plantillaExterna.read())
+    
+    # cierro el documento
+    plantillaExterna.close()
+    
+    #  crea un contexto xd
+    contexto = context()
+    
+    # Renderiza el documento
+    documento = template.render(contexto)
