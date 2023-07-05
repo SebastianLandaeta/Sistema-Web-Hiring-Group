@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from Aplicaciones.HG_APPS.models import Empresa
+from Aplicaciones.HG_APPS.models import *
 
 # 1 forma de hacerlo 
 def index(request):
@@ -20,9 +20,36 @@ def inicio_sesion(request):
     return render(request, "inicio_sesion.html")
 
 # permite a los usuarios registrarse
-def registro(request):
-    # Aquí puedes agregar el código para manejar la vista de registro
-    return HttpResponse("Vista de registro")
+def registro_postulantes(request):
+    if request.method == 'POST':
+        cedula = request.POST['cedula']
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        correo = request.POST['correo']
+        contrasena = request.POST['contrasena']
+        sexo = request.POST['sexo']
+        telefono = request.POST['telefono']
+        tipo_sangre = request.POST['tipo_sangre']
+        contacto = request.POST['contacto']
+        numero_emergencia = request.POST['numero_emergencia']
+
+        usuario = UTrabajador(
+            cedula=cedula,
+            nombre=nombre,
+            apellido=apellido,
+            correo=correo,
+            contraseña=contrasena,
+            sexo=sexo,
+            telefono=telefono,
+            rol=2,
+            tipo_de_sangre=tipo_sangre,
+            persona_de_contacto=contacto,
+            numero_de_emergencia=numero_emergencia)
+
+        usuario.save()
+
+    return render(request, "registro_postulantes.html")
+        
 
 # muestra una lista de todas las ofertas disponibles
 def lista_ofertas(request):

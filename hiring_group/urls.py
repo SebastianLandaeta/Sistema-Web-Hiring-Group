@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from hiring_group.views import index, inicio_sesion, registro, lista_ofertas
+from hiring_group.views import index, inicio_sesion, registro_postulantes, lista_ofertas
 from hiring_group.views import detalle_oferta, postulacion, lista_postulaciones
-from hiring_group.views import contratacion, nomina, plantillaParametros,Lista_empresas
+from hiring_group.views import contratacion, nomina, plantillaParametros, Lista_empresas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', index),
     path('inicio_sesion/', inicio_sesion),
-    path('registro/', registro),
+    path('registro_postulantes/', registro_postulantes, name='registro_postulantes'),
     path('lista_ofertas/', lista_ofertas),
     path('detalle_oferta/<int:oferta_id>/', detalle_oferta),
     path('postulacion/<int:oferta_id>/', postulacion),
@@ -31,5 +31,5 @@ urlpatterns = [
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
     path('plantillaParametros/', plantillaParametros),
-    path('Lista_Empresas/',Lista_empresas),
+    path('Lista_Empresas/', Lista_empresas)
 ]

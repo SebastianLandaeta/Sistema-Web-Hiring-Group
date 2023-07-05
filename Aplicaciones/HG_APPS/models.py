@@ -20,7 +20,7 @@ class AreaTrabajador(models.Model):
 
 
 class Banco(models.Model):
-    nro_de_cuenta = models.IntegerField(primary_key=True)
+    nro_de_cuenta = models.BigIntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
     trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
 
@@ -101,7 +101,7 @@ class UEmpresa(models.Model):
     correo = models.CharField(max_length=70)
     contraseña = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1)
-    telefono = models.IntegerField()
+    telefono = models.BigIntegerField()
     rol = models.SmallIntegerField()
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
 
@@ -116,11 +116,11 @@ class UTrabajador(models.Model):
     correo = models.CharField(max_length=70)
     contraseña = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1)
-    telefono = models.IntegerField()
+    telefono = models.BigIntegerField()
     rol = models.SmallIntegerField()
     tipo_de_sangre = models.CharField(max_length=2)
-    persona_de_contacto = models.IntegerField()
-    numero_de_emergencia = models.IntegerField()
+    persona_de_contacto = models.BigIntegerField()
+    numero_de_emergencia = models.BigIntegerField()
 
     class Meta:
         db_table = 'U_Trabajador'
@@ -133,7 +133,7 @@ class Usuario(models.Model):
     correo = models.CharField(max_length=70)
     contraseña = models.CharField(max_length=50)
     sexo = models.CharField(max_length=1)
-    telefono = models.IntegerField()
+    telefono = models.BigIntegerField()
     rol = models.SmallIntegerField()
 
     class Meta:
