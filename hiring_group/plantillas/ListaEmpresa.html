@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block title %} Empresas Registradas {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-8">
+            <h2 class="text-center">Listado de Empresas Registradas</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Empresas</th>
+                            <th>Sector</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in Empresas%}
+                        <tr>
+                            <td>{{emp.id}}</td>
+                            <td>{{emp.nombre}}</td>
+                            <td>{{emp.sector}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from hiring_group.views import index, inicio_sesion, registro, lista_ofertas
 from hiring_group.views import detalle_oferta, postulacion, lista_postulaciones
-from hiring_group.views import contratacion, nomina, plantillaParametros
+from hiring_group.views import contratacion, nomina, plantillaParametros,Lista_empresas
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +30,6 @@ urlpatterns = [
     path('lista_postulaciones/', lista_postulaciones),
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
-    path('plantillaParametros/', plantillaParametros)
+    path('plantillaParametros/', plantillaParametros),
+    path('Lista_Empresas/',Lista_empresas),
 ]

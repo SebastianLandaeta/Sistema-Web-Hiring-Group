@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from Aplicaciones.HG_APPS.models import Empresa
 
 # 1 forma de hacerlo 
 def index(request):
@@ -52,3 +53,7 @@ def contratacion(request, oferta_id):
 def nomina(request, empresa_id):
     # Aquí puedes agregar el código para manejar la vista de nómina
     return HttpResponse(f"Vista de nómina {empresa_id}")
+
+def Lista_empresas(request):
+    ListaEmpresa=Empresa.objects.all()
+    return render(request,"ListaEmpresa.html",{"Empresas":ListaEmpresa})
