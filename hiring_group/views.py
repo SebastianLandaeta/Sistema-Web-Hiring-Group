@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Aplicaciones.HG_APPS.models import *
 
 # 1 forma de hacerlo 
@@ -81,6 +81,16 @@ def nomina(request, empresa_id):
     # Aquí puedes agregar el código para manejar la vista de nómina
     return HttpResponse(f"Vista de nómina {empresa_id}")
 
-def Lista_empresas(request):
+def Registro_empresa(request):
+    if request.method == 'POST':
+        nombre = request.POST['Nombre_empresa']
+        sector = request.POST['Sector_empresa']
+        
+        ultimo_id = Empresa.objects.latest('id').id if Empresa.objects.exists() else 0
+        nueva_empresa = Empresa(id=ultimo_id + 1, nombre=nombre, sector=sector)
+        nueva_empresa.save()
+    
     ListaEmpresa=Empresa.objects.all()
     return render(request,"ListaEmpresa.html",{"Empresas":ListaEmpresa})
+
+

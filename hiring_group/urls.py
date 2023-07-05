@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from hiring_group.views import index, inicio_sesion, registro_postulantes, lista_ofertas
-from hiring_group.views import detalle_oferta, postulacion, lista_postulaciones
-from hiring_group.views import contratacion, nomina, plantillaParametros, Lista_empresas
+from hiring_group.views import *
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,5 +30,5 @@ urlpatterns = [
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
     path('plantillaParametros/', plantillaParametros),
-    path('Lista_Empresas/', Lista_empresas)
+    path('Registro_empresa/', Registro_empresa, name='Registro_empresa'),
 ]

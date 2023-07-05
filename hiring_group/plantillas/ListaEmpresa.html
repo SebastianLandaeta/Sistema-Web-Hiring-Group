@@ -1,16 +1,43 @@
 {% extends "index.html" %}
 
-{% block title %} Empresas Registradas {% endblock %}
+{% block title %} Control de Empresas Registradas {% endblock %}
 
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
 
+        <!--Parte de registro-->
+        <div class="col-md-4">
+            <div class="form-label m-lg-auto p-md-4 table-responsive">
+
+                <form method="POST" action="{% url 'Registro_empresa' %}">
+                    {% csrf_token %}
+
+                    <h4 class="m-4 text-center modal-title">Registro de Nueva Empresa</h4>
+                    <div class="mx-3 p-1">
+                        <label for="Nombre_empresa" class="form-label">Nombre de la Empresa</label>
+                        <input type="text" class="form-control"  name="Nombre_empresa" required>
+                    </div>
+                    <div class="mx-3 p-1">
+                        <label for="Sector_empresa" class="form-label">Sector de la Empresa</label>
+                        <input type="text" class="form-control" name="Sector_empresa" required>
+                    </div>
+                    <div class="d-block text-center mx-auto">
+                        <button type="submit"
+                            class="btn btn-outline-primary my-4">Registrar
+                            Empresa</button>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="col-md-8">
-            <h2 class="text-center">Listado de Empresas Registradas</h2>
+
+
+
+        <!--Parte de listado de Ya registradas-->
+        <div class="my-4 col-md-8">
+            <h4 class="text-center my-4">Listado de Empresas Registradas</h4>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -32,6 +59,8 @@
                 </table>
             </div>
         </div>
+
+
     </div>
 </div>
 
