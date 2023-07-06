@@ -20,7 +20,7 @@ from hiring_group.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', index),
+    path('', index),
     path('inicio_sesion/', inicio_sesion),
     path('registro_postulantes/', registro_postulantes, name='registro_postulantes'),
     path('lista_ofertas/', lista_ofertas),

@@ -7,7 +7,8 @@
 <body>
     <div class="container align-self-center">
         <h2  style="margin-top: 129px;"> {% block title_content %}  {% endblock %} </h2>
-        <form>
+        <form action="/aun-nosexd/" method="POST">
+            
             <div class="form-group">
                 <label for="email"> {% block content %}  {% endblock %} </label>
                 <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" name="email">
