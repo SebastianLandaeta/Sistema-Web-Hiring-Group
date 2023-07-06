@@ -86,11 +86,18 @@ def Registro_empresa(request):
         nombre = request.POST['Nombre_empresa']
         sector = request.POST['Sector_empresa']
         
+        # Verificar si ya existe una empresa con el mismo nombre
+        if Empresa.objects.filter(nombre=nombre).exists():
+            error_message = 'Ya existe una empresa con ese nombre.'
+            ListaEmpresa = Empresa.objects.all()
+            return render(request, "ListaEmpresa.html", {"Empresas": ListaEmpresa, "error_message": error_message})
+        
         ultimo_id = Empresa.objects.latest('id').id if Empresa.objects.exists() else 0
         nueva_empresa = Empresa(id=ultimo_id + 1, nombre=nombre, sector=sector)
         nueva_empresa.save()
     
-    ListaEmpresa=Empresa.objects.all()
-    return render(request,"ListaEmpresa.html",{"Empresas":ListaEmpresa})
+    ListaEmpresa = Empresa.objects.all()
+    return render(request, "ListaEmpresa.html", {"Empresas": ListaEmpresa})
+
 
 
