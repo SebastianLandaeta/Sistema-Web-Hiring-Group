@@ -1,9 +1,34 @@
-{% extends "registro_padre.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>login HG</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    {% block header %}
+    {% include 'header.html' %}
+    {% endblock %}
 
-{% block title_content %} Formulario de inicio de sesión {% endblock %}
 
-{% block content %} Ingrese su correo: {% endblock %}
-<!-- aqui iria el placeholder -->
+    <div class="container align-self-center">
+        <h2  style="margin-top: 129px;"> {% block title_content %}  {% endblock %} </h2>
 
-{% block content2 %} Ingrese su contraseña {% endblock %}
-<!-- aqui iria el placeholder -->
+        
+        <form action="/aun-nosexd/" method="POST">    
+            <div class="form-group">
+                <label for="email"> {% block content %}  {% endblock %} </label>
+                <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" name="email">
+            </div>
+            <div class="form-group">
+                <label for="pwd"> {% block content2 %}  {% endblock %} </label>
+                <input type="password" class="form-control" id="pwd" placeholder="Ingresa tu contraseña" name="pwd">
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        </form>
+
+    </div>
+</body>
+</html>
+
+
+ 

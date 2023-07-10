@@ -1,57 +1,70 @@
-{% extends "index.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>registrarse HG</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
 
-{% block title %} Formulario {% endblock %}
+<body>
+  
+    {% block header %}
+    {% include 'header.html' %}
+    {% endblock %}
+  
+    <h3>Formulario de Registro</h3>
+    <form method="POST" action="{% url 'registro_postulantes' %}">
+      {% csrf_token %}
+  
+      <label for="cedula">Cédula:</label>
+      <input type="text" name="cedula" required>
+      <br>
+  
+      <label for="nombre">Nombre:</label>
+      <input type="text" name="nombre" required>
+      <br>
+  
+      <label for="apellido">Apellido:</label>
+      <input type="text" name="apellido" required>
+      <br>
+  
+      <label for="correo">Correo:</label>
+      <input type="email" name="correo" required>
+      <br>
+  
+      <label for="contrasena">Contraseña:</label>
+      <input type="password" name="contrasena" required>
+      <br>
+  
+      <label for="sexo">Sexo:</label>
+      <select name="sexo" required>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+      </select>
+      <br>
+      
+      <label for="telefono">Telefono:</label>
+      <input type="text" name="telefono" required>
+      <br>
+  
+      <label for="tipo_sangre">Tipo de sangre:</label>
+      <input type="text" name="tipo_sangre" required>
+      <br>
+  
+      <label for="contacto">Persona de contacto:</label>
+      <input type="text" name="contacto" required>
+      <br>
+  
+      <label for="numero_emergencia">Número de emergencia:</label>
+      <input type="text" name="numero_emergencia" required>
+  
+      <button type="submit">Guardar</button>
+      <br>
+    </form>
+  
+      
 
-{% block content %}
 
-  <h1>Formulario de Registro</h1>
-  <form method="POST" action="{% url 'registro_postulantes' %}">
-    {% csrf_token %}
-
-    <label for="cedula">Cédula:</label>
-    <input type="text" name="cedula" required>
-    <br>
-
-    <label for="nombre">Nombre:</label>
-    <input type="text" name="nombre" required>
-    <br>
-
-    <label for="apellido">Apellido:</label>
-    <input type="text" name="apellido" required>
-    <br>
-
-    <label for="correo">Correo:</label>
-    <input type="email" name="correo" required>
-    <br>
-
-    <label for="contrasena">Contraseña:</label>
-    <input type="password" name="contrasena" required>
-    <br>
-
-    <label for="sexo">Sexo:</label>
-    <select name="sexo" required>
-      <option value="M">Masculino</option>
-      <option value="F">Femenino</option>
-    </select>
-    <br>
-    
-    <label for="telefono">Telefono:</label>
-    <input type="text" name="telefono" required>
-    <br>
-
-    <label for="tipo_sangre">Tipo de sangre:</label>
-    <input type="text" name="tipo_sangre" required>
-    <br>
-
-    <label for="contacto">Persona de contacto:</label>
-    <input type="text" name="contacto" required>
-    <br>
-
-    <label for="numero_emergencia">Número de emergencia:</label>
-    <input type="text" name="numero_emergencia" required>
-
-    <button type="submit">Guardar</button>
-    <br>
-  </form>
-
-  {% endblock %}
+</body>
+</html>

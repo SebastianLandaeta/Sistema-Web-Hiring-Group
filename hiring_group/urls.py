@@ -29,6 +29,5 @@ urlpatterns = [
     path('lista_postulaciones/', lista_postulaciones),
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
-    path('plantillaParametros/', plantillaParametros),
     path('Registro_empresa/', Registro_empresa, name='Registro_empresa'),
 ]
