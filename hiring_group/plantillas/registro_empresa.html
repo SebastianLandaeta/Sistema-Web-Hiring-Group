@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "header.html" %}
 
 {% block title %} Control de Empresas Registradas {% endblock %}
 
@@ -11,7 +11,7 @@
         <div class="col-md-4">
             <div class="form-label m-lg-auto p-md-4 table-responsive">
 
-                <form method="POST" action="{% url 'Registro_empresa' %}">
+                <form method="POST" action="/Registro_empresa/">
                     {% csrf_token %}
 
                     <h4 class="m-4 text-center modal-title">Registro de Nueva Empresa</h4>

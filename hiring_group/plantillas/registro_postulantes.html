@@ -14,7 +14,7 @@
     {% endblock %}
   
     <h3>Formulario de Registro</h3>
-    <form method="POST" action="{% url 'registro_postulantes' %}">
+    <form method="POST" action="/registro_postulantes/">
       {% csrf_token %}
   
       <label for="cedula">Cédula:</label>

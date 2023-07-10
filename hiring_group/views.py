@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from Aplicaciones.HG_APPS.models import *
-from hiring_group.procesamiento import *
+from hiring_group.funciones import *
 import warnings
 
 # 1 forma de hacerlo
@@ -83,7 +83,7 @@ def Registro_empresa(request):
             ListaEmpresa = Empresa.objects.all()
             return render(
                 request,
-                "ListaEmpresa.html",
+                "registro_empresa.html",
                 {"Empresas": ListaEmpresa, "error_message": error_message},
             )
 
@@ -92,4 +92,4 @@ def Registro_empresa(request):
         nueva_empresa.save()
 
     ListaEmpresa = Empresa.objects.all()
-    return render(request, "ListaEmpresa.html", {"Empresas": ListaEmpresa})
+    return render(request, "registro_empresa.html", {"Empresas": ListaEmpresa})
