@@ -1,6 +1,28 @@
 from django.db import models
 
 
+class Usuario(models.Model):
+    cedula = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=30)
+    apellido = models.CharField(max_length=30)
+    correo = models.CharField(max_length=70)
+    contraseña = models.CharField(max_length=50)
+    sexo = models.CharField(max_length=1)
+    telefono = models.BigIntegerField()
+    rol = models.SmallIntegerField()
+
+    class Meta:
+        db_table = 'Usuario'
+
+class UTrabajador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, default=1)
+    tipo_de_sangre = models.CharField(max_length=2)
+    persona_de_contacto = models.BigIntegerField()
+    numero_de_emergencia = models.BigIntegerField()
+
+    class Meta:
+        db_table = 'U_Trabajador'
+
 class AreaDeConocimiento(models.Model):
     id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=40)
@@ -95,46 +117,8 @@ class Recibo(models.Model):
 
 
 class UEmpresa(models.Model):
-    cedula = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=30)
-    apellido = models.CharField(max_length=30)
-    correo = models.CharField(max_length=70)
-    contraseña = models.CharField(max_length=50)
-    sexo = models.CharField(max_length=1)
-    telefono = models.BigIntegerField()
-    rol = models.SmallIntegerField()
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, default=1)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'U_Empresa'
-
-
-class UTrabajador(models.Model):
-    cedula = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=30)
-    apellido = models.CharField(max_length=30)
-    correo = models.CharField(max_length=70)
-    contraseña = models.CharField(max_length=50)
-    sexo = models.CharField(max_length=1)
-    telefono = models.BigIntegerField()
-    rol = models.SmallIntegerField()
-    tipo_de_sangre = models.CharField(max_length=2)
-    persona_de_contacto = models.BigIntegerField()
-    numero_de_emergencia = models.BigIntegerField()
-
-    class Meta:
-        db_table = 'U_Trabajador'
-
-
-class Usuario(models.Model):
-    cedula = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=30)
-    apellido = models.CharField(max_length=30)
-    correo = models.CharField(max_length=70)
-    contraseña = models.CharField(max_length=50)
-    sexo = models.CharField(max_length=1)
-    telefono = models.BigIntegerField()
-    rol = models.SmallIntegerField()
-
-    class Meta:
-        db_table = 'Usuario'
