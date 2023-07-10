@@ -29,5 +29,5 @@ urlpatterns = [
     path('lista_postulaciones/', lista_postulaciones),
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
-    path('Registro_empresa/', Registro_empresa),
+    path('registro_empresa/', Registro_empresa),
 ]
