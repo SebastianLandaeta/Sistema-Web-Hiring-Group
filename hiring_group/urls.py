@@ -30,4 +30,5 @@ urlpatterns = [
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
     path('registro_empresa/', Registro_empresa),
+    path('Lista_Usuarios/',Panel_usuarios),
 ]

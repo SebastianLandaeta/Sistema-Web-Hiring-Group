@@ -1,0 +1,65 @@
+{% extends "header.html" %}
+
+{% block title %} Listado de Usuarios {% endblock %}
+
+{% block content %}
+
+<h1>Panel de Usuarios</h1>
+
+<h2>Usuarios Trabajadores</h2>
+
+{% if trabajadores %}
+    <!-- Mostrar la tabla de trabajadores -->
+    <table>
+        <tr>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Correo</th>
+            <th>Tipo de Sangre</th>
+            <th>Persona de Contacto</th>
+            <th>Número de Emergencia</th>
+        </tr>
+        {% for trabajador in trabajadores %}
+        <tr>
+            <td>{{ trabajador.usuario.cedula }}</td>
+            <td>{{ trabajador.usuario.nombre }}</td>
+            <td>{{ trabajador.usuario.apellido }}</td>
+            <td>{{ trabajador.usuario.correo }}</td>
+            <td>{{ trabajador.tipo_de_sangre }}</td>
+            <td>{{ trabajador.persona_de_contacto }}</td>
+            <td>{{ trabajador.numero_de_emergencia }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No hay usuarios trabajadores registrados.</p>
+{% endif %}
+
+<h2>Usuarios Empresas</h2>
+
+{% if empresas %}
+<!-- Mostrar la tabla de empresas -->
+<table>
+    <tr>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo</th>
+        <th>Empresa</th>
+    </tr>
+    {% for empresa in empresas %}
+    <tr>
+        <td>{{ empresa.usuario.cedula }}</td>
+        <td>{{ empresa.usuario.nombre }}</td>
+        <td>{{ empresa.usuario.apellido }}</td>
+        <td>{{ empresa.usuario.correo }}</td>
+        <td>{{ empresa.empresa.nombre }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <p>No hay usuarios empresas registrados.</p>
+{% endif %}
+
+{% endblock %}

@@ -6,7 +6,6 @@ def registrar_Utrabajador(user):
 
     if existe_cedula or existe_correo:
         return False
-       
     else:
         usuario = Usuario(
             cedula=user[0],
@@ -59,3 +58,29 @@ def identificar_rol(correo, contraseña):
     # Si el usuario es de tipo empresa
     if rol == 4:
         return 4
+
+def verificar_existencia_empresa(nombre):
+    existe_empresa = Empresa.objects.filter(nombre=nombre).exists()
+    if existe_empresa:
+        return True
+    else:
+        return False
+    
+def registrar_empresa(nombre,sector):
+    ultimo_id = Empresa.objects.latest("id").id if Empresa.objects.exists() else 0
+    nueva_empresa = Empresa(id=ultimo_id + 1, nombre=nombre, sector=sector)
+    nueva_empresa.save()
+    return nueva_empresa
+
+def registrar_Uempresa(user = Usuario,u_empresa = UEmpresa):
+    existe_cedula = Usuario.objects.filter(cedula=user.cedula).exists()
+    if existe_cedula:
+        return False
+    else:
+        user.save()
+        u_empresa.save()
+        return True
+    
+def ultimo_id_test():
+    ultimo_id = Empresa.objects.latest("id").id if Empresa.objects.exists() else 0
+    return ultimo_id

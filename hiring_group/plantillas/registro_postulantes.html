@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>registrarse HG</title>
+  <title>Registro Usuario Postulante</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 
@@ -13,7 +13,7 @@
     {% include 'header.html' %}
     {% endblock %}
   
-    <h3>Formulario de Registro</h3>
+    <h3>Formulario de Registro (U. Postulante)</h3>
     <form method="POST" action="/registro_postulantes/">
       {% csrf_token %}
   
@@ -66,9 +66,6 @@
     {% if error_message %}
     <p class="text-danger">{{ error_message }}</p>
     {% endif %}
-  
-      
-
 
 </body>
 </html>

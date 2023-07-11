@@ -1,44 +1,109 @@
 {% extends "header.html" %}
 
-{% block title %} Control de Empresas Registradas {% endblock %}
+{% block title %}Control de Empresas Registradas{% endblock %}
 
 {% block content %}
 
 <div class="container">
     <div class="row">
 
-        <!--Parte de registro-->
+        <!-- Parte de registro -->
+
         <div class="col-md-4">
-            <div class="form-label m-lg-auto p-md-4 table-responsive">
+            <div class="registro">
+                <div class="form-label m-lg-auto p-md-4 table-responsive">
+                    <form method="POST" action="#">
+                        {% csrf_token %}
 
-                <form method="POST" action="/registro_empresa/">
-                    {% csrf_token %}
+                        <h4 class="m-4 text-center modal-title">Registro de Nueva Empresa</h4>
+                        <div class="mx-3 p-1">
+                            <label for="Nombre_empresa" class="form-label">Nombre de la Empresa</label>
+                            <input type="text" class="form-control" id="nombreEmpresa" name="Nombre_empresa" required>
+                        </div>
+                        <div class="mx-3 p-1">
+                            <label for="Sector_empresa" class="form-label">Sector de la Empresa</label>
+                            <input type="text" class="form-control" id="sectorEmpresa" name="Sector_empresa" required>
+                        </div>
+                        <div class="d-block text-center mx-auto my-5">
 
-                    <h4 class="m-4 text-center modal-title">Registro de Nueva Empresa</h4>
-                    <div class="mx-3 p-1">
-                        <label for="Nombre_empresa" class="form-label">Nombre de la Empresa</label>
-                        <input type="text" class="form-control"  name="Nombre_empresa" required>
-                    </div>
-                    <div class="mx-3 p-1">
-                        <label for="Sector_empresa" class="form-label">Sector de la Empresa</label>
-                        <input type="text" class="form-control" name="Sector_empresa" required>
-                    </div>
-                    <div class="d-block text-center mx-auto">
-                        <button type="submit"
-                            class="btn btn-outline-primary my-4">Registrar
-                            Empresa</button>
-                        </button>
-                    </div>
-                </form>
-                {% if error_message %}
-                    <p class="text-danger">{{ error_message }}</p>
-                {% endif %}
+                            <span>Suministre los datos de usuario para la empresa provisional</span>
+                            <span><i>no se registrara la empresa sin usuario provisional</i></span>
+
+                            <button type="button" class="btn btn-outline-primary my-4" onclick="validarEmpresa()">
+                                Registro de U. Empresa
+                            </button>
+                            
+                        </div>
+
+                </div>
             </div>
+
+            <!-- Modal de registro -->
+            <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="registroModalLabel">Registro de Nuevo Usuario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="cedula" class="form-label">Cedula</label>
+                                <input type="text" class="form-control" name="cedula" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" name="apellido" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sexo" class="form-label">Sexo</label>
+                                <select name="sexo" required>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" name="telefono" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="correo" class="form-label">Correo</label>
+                                <input type="text" class="form-control" name="correo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contraseña" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" name="contraseña" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Registrar Usuario</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
         </div>
 
-
-
-        <!--Parte de listado de Ya registradas-->
+        <!-- Parte de listado de Ya registradas -->
         <div class="my-4 col-md-8">
             <h4 class="text-center my-4">Listado de Empresas Registradas</h4>
             <div class="table-responsive">
@@ -64,7 +129,43 @@
         </div>
 
 
+
+        <div class="container-fluid">
+            <div class="row">
+        
+                <div class="col-12">
+                    {% if mensaje_felicidades %}
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="alert-heading">Empresa y Usuario registrados</h4>
+                            <p>Su empresa ha sido registrada con éxito</p>
+                            <hr>
+                            <p>{{mensaje_felicidades}}</p>
+                            <p class="mb-0">Datos Provisionales: Usuario: {{ usuario }}, contraseña: {{ contraseña }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+        
+            </div>
+        </div>
+
     </div>
 </div>
+
+
+<script>
+    function validarEmpresa() {
+        // Obtener los valores de los campos de nombre y sector de la empresa
+        var nombreEmpresa = document.getElementById("nombreEmpresa").value;
+        var sectorEmpresa = document.getElementById("sectorEmpresa").value;
+
+        // Verificar si los campos están vacíos
+        if (nombreEmpresa === "" || sectorEmpresa === "") {
+            alert("Por favor, complete los campos de Nombre de la Empresa y Sector de la Empresa antes de continuar.");
+        } else {
+            // Mostrar el modal de registro
+            $('#registroModal').modal('show');
+        }
+    }
+</script>
 
 {% endblock %}
