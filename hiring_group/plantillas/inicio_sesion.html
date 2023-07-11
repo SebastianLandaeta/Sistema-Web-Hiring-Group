@@ -1,22 +1,28 @@
 {% extends "header.html" %}
 
-{% block title %} inicio_seciones {% endblock %}
+{% block title %} inicio_sesiones {% endblock %}
 
 {% block content %}
 
 <div class="container align-self-center">
     <h2>inicio sesión</h2>
 
-    
-    <form action="/aun-nosexd/" method="POST">    
+
+    <form method="POST">
+        {% csrf_token %}
         <div class="form-group">
-            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico" name="email">
+            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico"
+                name="correo">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" id="pwd" placeholder="Ingresa tu contraseña" name="pwd">
+            <input type="password" class="form-control" id="pwd" placeholder="Ingresa tu contraseña" name="contraseña">
         </div>
         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
     </form>
+
+    {% if error_message %}
+    <p class="text-danger">{{ error_message }}</p>
+    {% endif %}
 
 </div>
 {% endblock %}

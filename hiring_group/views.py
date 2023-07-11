@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from Aplicaciones.HG_APPS.models import *
 from hiring_group.funciones import *
 import warnings
+from django.contrib.auth import authenticate, login
 
 # 1 forma de hacerlo
 def index(request):
@@ -12,9 +13,31 @@ def index(request):
 
 # permite a los usuarios iniciar sesión con su correo electrónico y contraseña
 def inicio_sesion(request):
-    # Aquí puedes agregar el código para manejar la vista de inicio de sesión
-    return render(request, "inicio_sesion.html")
+    if request.method == "POST":
+        correo = request.POST["correo"]
+        contraseña = request.POST["contraseña"]
+        
+        respuesta = validar_login(correo, contraseña)
 
+        # En caso de que haya hecho el login correctamente
+        if respuesta == 1:
+            return render(request, 'inicio_valido.html')
+        
+        # En caso de que exista el correo pero la clave sea invalida
+        if respuesta == 2:
+            error_message = 'Contraseña invalida.'
+            return render(request, 'inicio_sesion.html', {'error_message': error_message})
+        
+        # En caso de que el correo no exista
+        if respuesta == 3:
+            error_message = 'El correo no existe.'
+            return render(request, 'inicio_sesion.html', {'error_message': error_message})
+    
+    return render(request, 'inicio_sesion.html')
+
+    
+def inicio_valido(request):
+    return render(request, 'inicio_valido.html')
 
 # permite a los usuarios registrarse
 def registro_postulantes(request):
@@ -31,7 +54,12 @@ def registro_postulantes(request):
         user.append(request.POST["tipo_sangre"])
         user.append(request.POST["contacto"])
         user.append(request.POST["numero_emergencia"])
-        registrar_Utrabajador(user)
+    
+        if registrar_Utrabajador(user):
+            return render(request, "inicio_sesion.html")
+        else:
+            error_message = 'Cédula o correo ya existentes.'
+            return render(request, "registro_postulantes.html", {'error_message': error_message})
 
     return render(request, "registro_postulantes.html")
 

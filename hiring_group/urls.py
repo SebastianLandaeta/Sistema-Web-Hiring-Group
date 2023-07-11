@@ -17,13 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from hiring_group.views import *
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('inicio_sesion/', inicio_sesion),
     path('registro_postulantes/', registro_postulantes),
     path('lista_ofertas/', lista_ofertas),
+    path('inicio_valido', inicio_valido),
     path('detalle_oferta/<int:oferta_id>/', detalle_oferta),
     path('postulacion/<int:oferta_id>/', postulacion),
     path('lista_postulaciones/', lista_postulaciones),

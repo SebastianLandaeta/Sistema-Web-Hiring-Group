@@ -62,6 +62,10 @@
       <button type="submit">Guardar</button>
       <br>
     </form>
+
+    {% if error_message %}
+    <p class="text-danger">{{ error_message }}</p>
+    {% endif %}
   
       
 
