@@ -121,7 +121,17 @@ def Registro_empresa(request):
             correo = request.POST["correo"]
             contraseña = request.POST["contraseña"]
 
-            usuario_nuevo = Usuario(
+            if verificar_existencia_u_empresa(cedula_u):
+                error_message = "Cedula esta ocupada por otro Usuario"
+                ListaEmpresa = Empresa.objects.all()
+                return render(
+                request, "registro_empresa.html",
+                {"Empresas": ListaEmpresa, "error_message": error_message},
+                )
+            else:
+                registrar_empresa(nombre, sector)
+
+                usuario_nuevo = Usuario(
                 cedula=cedula_u,
                 nombre=nombre_u,
                 apellido=apellido_u,
@@ -130,29 +140,22 @@ def Registro_empresa(request):
                 sexo=sexo_u,
                 telefono=telefono_u,
                 rol=4
-            )
+                )
 
-            usuario_empresa = UEmpresa(
-                usuario_id=cedula_u,
-                empresa_id=ultimo_id_test(),
-            )
+                usuario_empresa = UEmpresa(
+                    empresa_id=ultimo_id_test(),
+                    usuario_id=cedula_u
+                )
 
-            if registrar_Uempresa(usuario_nuevo, usuario_empresa):
-                registrar_empresa(nombre,sector)
+                registrar_Uempresa(usuario_nuevo, usuario_empresa)
+
                 mensaje_felicidades = "Felicidades, Empresa Creada con éxito con Usuario Provisional"
                 ListaEmpresa = Empresa.objects.all()
                 return render(
                     request, "registro_empresa.html",
                     {"Empresas": ListaEmpresa, "mensaje_felicidades": mensaje_felicidades},
                 )
-            else:
-                error_message = "Cedula esta ocupada por otro Usuario"
-                ListaEmpresa = Empresa.objects.all()
-                return render(
-                request, "registro_empresa.html",
-                {"Empresas": ListaEmpresa, "error_message": error_message},
-                )
-
+            
     ListaEmpresa = Empresa.objects.all()
     return render(request, "registro_empresa.html", {"Empresas": ListaEmpresa})
 
