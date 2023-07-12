@@ -76,16 +76,8 @@
                                 <label for="telefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" name="telefono" required>
                             </div>
-                            <div class="form-group">
-                                <label for="correo" class="form-label">Correo</label>
-                                <input type="text" class="form-control" name="correo" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contraseña" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="contraseña" required>
-                            </div>
                         </div>
-
+                            
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Registrar Usuario</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -105,7 +97,9 @@
 
         <!-- Parte de listado de Ya registradas -->
         <div class="my-4 col-md-8">
+            
             <h4 class="text-center my-4">Listado de Empresas Registradas</h4>
+            {%if Empresas%}
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -116,16 +110,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for emp in Empresas%}
+                        {% for emp in Empresas %}
                         <tr>
-                            <td>{{emp.id}}</td>
-                            <td>{{emp.nombre}}</td>
-                            <td>{{emp.sector}}</td>
+                            <td>{{ emp.id }}</td>
+                            <td>{{ emp.nombre }}</td>
+                            <td>{{ emp.sector }}</td>
                         </tr>
-                        {%endfor%}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% else %}
+                <p class="text-center">No Hay empresas registradas en el sistema.</p>
+            {% endif %}
         </div>
 
 
@@ -140,7 +137,7 @@
                             <p>Su empresa ha sido registrada con éxito</p>
                             <hr>
                             <p>{{mensaje_felicidades}}</p>
-                            <p class="mb-0">Datos Provisionales: Usuario: {{ usuario }}, contraseña: {{ contraseña }}</p>
+                            <p class="mb-0">Datos Provisionales: Correo: {{ correo }}, contraseña: {{ contraseña }}</p>
                         </div>
                     {% endif %}
                 </div>

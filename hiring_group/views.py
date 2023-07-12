@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login
 
 # 1 forma de hacerlo
 def index(request):
-    warnings.warn("¡ventana de prueba!")
     return render(request, "index.html")
 
 
@@ -103,61 +102,63 @@ def Registro_empresa(request):
     if request.method == "POST":
         nombre = request.POST["Nombre_empresa"]
         sector = request.POST["Sector_empresa"]
+        cedula_u = request.POST["cedula"]
+        nombre_u = request.POST["nombre"]
+        apellido_u = request.POST["apellido"]
+        telefono_u = request.POST["telefono"]
+        sexo_u = request.POST["sexo"]
 
         # Verificar si ya existe una empresa con el mismo nombre
         if verificar_existencia_empresa(nombre):
             error_message = "Ya existe una empresa con ese nombre."
             ListaEmpresa = Empresa.objects.all()
+            if not ListaEmpresa:
+                ListaEmpresa=None
             return render(
                 request, "registro_empresa.html",
                 {"Empresas": ListaEmpresa, "error_message": error_message},
             )
+        elif verificar_cedula(cedula_u):
+            error_message = "Cedula esta ocupada por otro Usuario"
+            ListaEmpresa = Empresa.objects.all()
+            if not ListaEmpresa:
+                ListaEmpresa=None
+            return render(
+            request, "registro_empresa.html",
+            {"Empresas": ListaEmpresa, "error_message": error_message},
+            )
         else:
-            cedula_u = request.POST["cedula"]
-            nombre_u = request.POST["nombre"]
-            apellido_u = request.POST["apellido"]
-            telefono_u = request.POST["telefono"]
-            sexo_u = request.POST["sexo"]
-            correo = request.POST["correo"]
-            contraseña = request.POST["contraseña"]
+            empresa=registrar_empresa(nombre, sector)
 
-            if verificar_existencia_u_empresa(cedula_u):
-                error_message = "Cedula esta ocupada por otro Usuario"
-                ListaEmpresa = Empresa.objects.all()
-                return render(
-                request, "registro_empresa.html",
-                {"Empresas": ListaEmpresa, "error_message": error_message},
-                )
-            else:
-                registrar_empresa(nombre, sector)
+            usuario_nuevo = Usuario(
+            cedula=cedula_u,
+            nombre=nombre_u,
+            apellido=apellido_u,
+            correo=generar_correo(empresa.nombre,cedula_u,nombre_u,apellido_u),
+            contraseña=generar_contraseña(),
+            sexo=sexo_u,
+            telefono=telefono_u,
+            rol=4
+            )
 
-                usuario_nuevo = Usuario(
-                cedula=cedula_u,
-                nombre=nombre_u,
-                apellido=apellido_u,
-                correo=correo,
-                contraseña=contraseña,
-                sexo=sexo_u,
-                telefono=telefono_u,
-                rol=4
-                )
+            usuario_empresa = UEmpresa(
+            usuario=usuario_nuevo,
+            empresa=empresa,
+            )
 
-                usuario_empresa = UEmpresa(
-                    empresa_id=ultimo_id_test(),
-                    usuario_id=cedula_u
-                )
+            registrar_Uempresa(usuario_nuevo, usuario_empresa)
 
-                registrar_Uempresa(usuario_nuevo, usuario_empresa)
-
-                mensaje_felicidades = "Felicidades, Empresa Creada con éxito con Usuario Provisional"
-                ListaEmpresa = Empresa.objects.all()
-                return render(
-                    request, "registro_empresa.html",
-                    {"Empresas": ListaEmpresa, "mensaje_felicidades": mensaje_felicidades},
-                )
-            
+            mensaje_felicidades = f"Felicidades, Empresa {empresa.nombre} Creada y registrada con éxito"
+            ListaEmpresa = Empresa.objects.all()
+            if not ListaEmpresa:
+                ListaEmpresa=None
+            return render(
+            request, "registro_empresa.html",
+            {"Empresas": ListaEmpresa, "mensaje_felicidades": mensaje_felicidades, 'correo':usuario_nuevo.correo, 'contraseña':usuario_nuevo.contraseña},
+            )
+        
     ListaEmpresa = Empresa.objects.all()
-    return render(request, "registro_empresa.html", {"Empresas": ListaEmpresa})
+    return render(request, "registro_empresa.html", {"Empresas": ListaEmpresa},)
 
 def Panel_usuarios(request): #VISTA USUARIO HIRING GROUP
     # Obtener todos los usuarios trabajadores
