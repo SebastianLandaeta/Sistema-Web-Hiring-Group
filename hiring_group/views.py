@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from Aplicaciones.HG_APPS.models import *
 from hiring_group.funciones import *
 import warnings
-from django.contrib.auth import authenticate, login
 
 # 1 forma de hacerlo
 def index(request):
@@ -34,12 +33,13 @@ def inicio_sesion(request):
     
     return render(request, 'inicio_sesion.html')
 
-    
+
 def inicio_valido(request):
     return render(request, 'inicio_valido.html')
 
+
 # permite a los usuarios registrarse
-def registro_postulantes(request):
+def registro_postulante(request):
     if request.method == "POST":
         user = list()
         user.append(request.POST["cedula"])
@@ -58,9 +58,9 @@ def registro_postulantes(request):
             return render(request, "inicio_sesion.html")
         else:
             error_message = 'Cédula o correo ya existentes.'
-            return render(request, "registro_postulantes.html", {'error_message': error_message})
+            return render(request, "registro_postulante.html", {'error_message': error_message})
 
-    return render(request, "registro_postulantes.html")
+    return render(request, "registro_postulante.html")
 
 
 # muestra una lista de todas las ofertas disponibles
@@ -98,7 +98,8 @@ def nomina(request, empresa_id):
     # Aquí puedes agregar el código para manejar la vista de nómina
     return HttpResponse(f"Vista de nómina {empresa_id}")
 
-def Registro_empresa(request):
+
+def registro_empresa(request):
     if request.method == "POST":
         nombre = request.POST["Nombre_empresa"]
         sector = request.POST["Sector_empresa"]
@@ -160,7 +161,8 @@ def Registro_empresa(request):
     ListaEmpresa = Empresa.objects.all()
     return render(request, "registro_empresa.html", {"Empresas": ListaEmpresa},)
 
-def Panel_usuarios(request): #VISTA USUARIO HIRING GROUP
+
+def panel_usuarios(request): #VISTA USUARIO HIRING GROUP
     # Obtener todos los usuarios trabajadores
     trabajadores = UTrabajador.objects.all()
 

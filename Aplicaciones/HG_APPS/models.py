@@ -16,7 +16,7 @@ class Usuario(models.Model):
 
 class UTrabajador(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, default=1)
-    tipo_de_sangre = models.CharField(max_length=2)
+    tipo_de_sangre = models.CharField(max_length=3)
     persona_de_contacto = models.BigIntegerField()
     numero_de_emergencia = models.BigIntegerField()
 
