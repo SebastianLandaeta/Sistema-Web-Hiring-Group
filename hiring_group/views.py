@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate,login,logout,get_user
 # 1 forma de hacerlo
 def index(request):
     if request.user.is_authenticated:
-        User = request.user.password
+        User = request.user.nombre
         print(User)
     return render(request, "index.html")
 
@@ -36,7 +36,6 @@ def cerrar_sesion(request):
 def inicio_valido(request):
     return render(request, 'inicio_valido.html')
 
-
 def registro_postulantes(request):
     if request.method == "POST":
         user = list()
@@ -51,12 +50,17 @@ def registro_postulantes(request):
         user.append(request.POST["tipo_sangre"])
         user.append(request.POST["contacto"])
         user.append(request.POST["numero_emergencia"])
-    
-        if registrar_Utrabajador(user):
-            return render(request, "index.html")
-        else:
-            error_message = 'Cédula o correo ya existentes.'
+
+        if verificar_cedula(user[2]):
+            error_message = 'Cédula ya existente.'
             return render(request, "registro_postulantes.html", {'error_message': error_message})
+    
+        elif verificar_correo(user[0]):
+            error_message = 'Correo ya existente.'
+            return render(request, "registro_postulantes.html", {'error_message': error_message})
+        else:
+            registrar_Utrabajador(user)
+            return render(request, "index.html")
 
     return render(request, "registro_postulantes.html")
 
@@ -129,6 +133,7 @@ def registro_empresa(request):
         else:
             empresa=registrar_empresa(nombre, sector)
             clave = generar_contraseña()
+            
             usuario_nuevo = Usuario(
             cedula=cedula_u,
             nombre=nombre_u,
@@ -139,7 +144,7 @@ def registro_empresa(request):
             telefono=telefono_u,
             rol=4
             )
-           
+            
             usuario_empresa = UEmpresa(
             usuario=usuario_nuevo,
             empresa=empresa,
@@ -147,7 +152,7 @@ def registro_empresa(request):
 
             registrar_Uempresa(usuario_nuevo, usuario_empresa)
 
-            mensaje_felicidades = f"Felicidades, Empresa {empresa.nombre} Creada y registrada con éxito"
+            mensaje_felicidades = f"Felicidades, Empresa '{empresa.nombre}' Creada y registrada con éxito"
             ListaEmpresa = Empresa.objects.all()
             if not ListaEmpresa:
                 ListaEmpresa=None
@@ -175,3 +180,47 @@ def panel_usuarios(request): #VISTA USUARIO HIRING GROUP
 
     # Renderizar la plantilla 'panel_usuarios.html' con los datos de los usuarios
     return render(request, 'panel_usuarios(vista_HG).html', {'trabajadores': trabajadores, 'empresas': empresas})
+
+def registro_area_conocimiento(request):
+    if request.method == "POST":
+        nombre_a = request.POST["Nombre_area"]
+        descripcion = request.POST["Descripcion_area"]
+        if verificar_existencia_area(nombre_a):
+                error_message = "Ya existe esa area registrada."
+                ListaArea = AreaDeConocimiento.objects.all()
+                if not ListaArea:
+                    ListaArea=None
+                return render(
+                    request, "registro_ac.html",
+                    {"Areas": ListaArea, "error_message": error_message},
+                )
+        else:
+            registrar_area(nombre_a,descripcion)
+            mensaje_felicidades = f" Area '{nombre_a}' Creada y registrada con éxito"
+            ListaArea = AreaDeConocimiento.objects.all()
+            return render(request, "registro_ac.html", {"Areas": ListaArea,"mensaje_felicidades": mensaje_felicidades},)
+
+    ListaArea = AreaDeConocimiento.objects.all()
+    return render(request, "registro_ac.html", {"Areas": ListaArea},)
+
+def registro_banco(request):
+    if request.method == "POST":
+        nro_banco= request.POST["nro_banco"]
+        nombre_b = request.POST["Nombre_banco"]
+        if verificar_existencia_banco(nro_banco):
+                error_message = "Ya existe ese numero de cuenta."
+                ListaBanco = Banco.objects.all()
+                if not ListaBanco:
+                    ListaBanco=None
+                return render(
+                    request, "registro_banco.html",
+                    {"Bancos": ListaBanco, "error_message": error_message},
+                )
+        else:
+            registrar_banco(nro_banco,nombre_b)
+            mensaje_felicidades = f"Numero bancario '{nro_banco}' en el banco: '{nombre_b}', Creado y registrada con éxito"
+            ListaBanco = Banco.objects.all()
+            return render(request, "registro_banco.html", {"Bancos": ListaBanco,"mensaje_felicidades": mensaje_felicidades},)
+    
+    ListaBanco = Banco.objects.all()
+    return render(request, "registro_banco.html", {"Bancos": ListaBanco},)

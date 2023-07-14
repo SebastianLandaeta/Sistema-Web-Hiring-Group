@@ -38,9 +38,6 @@ class UsuarioManager(BaseUserManager):
 
 
 
-
-
-
 class Usuario(AbstractBaseUser):
     cedula = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
@@ -56,9 +53,18 @@ class Usuario(AbstractBaseUser):
     objects = UsuarioManager() 
     class Meta:
         db_table = 'Usuario'
+    
+    def get_nombre_empresa(self):
+        if self.rol == 4:
+            try:
+                uempresa = UEmpresa.objects.get(usuario=self)
+                return uempresa.empresa.nombre
+            except UEmpresa.DoesNotExist:
+                return ""
+        else:
+            return ""
+    objects = UsuarioManager()
 
-
-     
 
 class UTrabajador(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, default=1)
@@ -90,7 +96,7 @@ class AreaTrabajador(models.Model):
 class Banco(models.Model):
     nro_de_cuenta = models.BigIntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
-    trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
+    #trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Banco'
@@ -145,7 +151,7 @@ class Oferta(models.Model):
 
 class Postulacion(models.Model):
     id = models.IntegerField(primary_key=True)
-    trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
+    trabajador = models.ForeignKey(UTrabajador, on_delete=models.CASCADE)
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
 
     class Meta:

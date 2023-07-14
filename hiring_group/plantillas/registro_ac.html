@@ -1,0 +1,91 @@
+{% extends "header.html" %}
+
+{% block title %}Control de Area de Conocimientos Registradas{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+        <!-- Parte de registro -->
+
+        <div class="col-md-4">
+            <div class="registro">
+                <div class="form-label m-lg-auto p-md-4 table-responsive">
+                    <form method="POST" action="#">
+                        {% csrf_token %}
+
+                        <h4 class="m-4 text-center modal-title">Registro de Area de conocimiento</h4>
+                        <div class="mx-3 p-1">
+                            <label for="Nombre_area" class="form-label">Nombre del area</label>
+                            <input type="text" class="form-control" name="Nombre_area" required>
+                        </div>
+                        <div class="mx-3 p-1">
+                            <label for="Descripcion_area" class="form-label">Descripcion del area</label>
+                            <input type="text" class="form-control" name="Descripcion_area" required>
+                        </div>
+                        <div class="d-block text-center mx-auto">
+                            <button type="submit" class="btn btn-outline-primary my-4">
+                                Registro del nuevo A.C.
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Parte de listado de Ya registradas -->
+        <div class="my-4 col-md-8">
+
+            <h4 class="text-center my-4">Listado de areas de conocimientos registradas</h4>
+            {%if Areas%}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th class="col-md-3">Nombre</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Ar in Areas %}
+                        <tr>
+                            <td>{{ Ar.id }}</td>
+                            <td>{{ Ar.nombre }}</td>
+                            <td>{{ Ar.descripcion }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center">No Hay areas de conociento registradas en el sistema.</p>
+            {% endif %}
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-12">
+                    {% if mensaje_felicidades %}
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">{{mensaje_felicidades}}</h4>
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

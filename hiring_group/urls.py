@@ -32,4 +32,6 @@ urlpatterns = [
     path('registro_empresa/', registro_empresa),
     path('Lista_Usuarios/', panel_usuarios),
     path('cerrar_sesion/',cerrar_sesion),
+    path('registro_ac/',registro_area_conocimiento),
+    path('registro_banco/',registro_banco),
 ]
