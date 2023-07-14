@@ -15,11 +15,12 @@
 </head>
 
 <body>
+    
     {% block header %}
     {% include 'header.html' %}
     {% endblock %}
 
-
+    {% csrf_token %}
 
     <!-- Contenido de la página -->
     <div class="container">

@@ -1,22 +1,68 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
+from django.contrib.auth import get_user_model
+
+class UsuarioManager(BaseUserManager):
+    def create_user(self, correo, contraseña, **extra_fields):
+        existing_user = get_user_model().objects.get(correo=correo)
+        usuario = self.model(
+            correo=existing_user.correo,
+            cedula=existing_user.cedula,
+            nombre=existing_user.nombre,
+            apellido=existing_user.apellido,
+            sexo=existing_user.sexo,
+            telefono=existing_user.telefono,
+            rol=existing_user.rol,
+            **extra_fields
+        )
+        usuario.set_password(contraseña)
+        usuario.save(using=self._db)
+        return usuario
 
 
-class Usuario(models.Model):
+    def create_superuser(self, cedula, nombre, apellido, correo, contraseña, sexo, telefono, rol):
+        usuario = self.create_user(
+            cedula=cedula,
+            nombre=nombre,
+            apellido=apellido,
+            correo=correo,
+            contraseña=contraseña,
+            sexo=sexo,
+            telefono=telefono,
+            rol=rol,
+        )
+        usuario.is_staff = True
+        usuario.is_superuser = True
+        usuario.save(using=self._db)
+        return usuario
+
+
+
+
+
+
+class Usuario(AbstractBaseUser):
     cedula = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
-    correo = models.CharField(max_length=70)
-    contraseña = models.CharField(max_length=50)
+    correo = models.CharField(max_length=70, unique=True)  # Agregar unique=True
     sexo = models.CharField(max_length=1)
     telefono = models.BigIntegerField()
     rol = models.SmallIntegerField()
+    # Otros campos y métodos de tu modelo
+    USERNAME_FIELD = "correo"
+    REQUIRED_FIELDS = ["rol"]
 
+    objects = UsuarioManager() 
     class Meta:
         db_table = 'Usuario'
 
+
+     
+
 class UTrabajador(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, default=1)
-    tipo_de_sangre = models.CharField(max_length=3)
+    tipo_de_sangre = models.CharField(max_length=2)
     persona_de_contacto = models.BigIntegerField()
     numero_de_emergencia = models.BigIntegerField()
 

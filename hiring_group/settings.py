@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Aplicaciones.HG_APPS'
 ]
+AUTH_USER_MODEL = 'HG_APPS.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'hiring_group.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/Hiring_Group/hiring_group/plantillas'],
+        'DIRS': ['C:/Sistema-Web-Hiring-Group/hiring_group/plantillas'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,14 +78,13 @@ WSGI_APPLICATION = 'hiring_group.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'HG_DB',
+        'NAME': 'Haring-Group-DB',
         'USER' : 'postgres',
-        'PASSWORD' : '10572820',
+        'PASSWORD' : 'password',
         'HOST' : 'localhost',
         'DATABASE_PORT': '5432'
     }
 }
-
 
 
 # Password validation
@@ -127,3 +127,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'Aplicaciones.HG_APPS.backend.TuBackendDeAutenticacion',  # Reemplaza 'tuapp.backends.TuBackendDeAutenticacion' con la ruta correcta a tu backend de autenticación personalizado
+]

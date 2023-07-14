@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('inicio_sesion/', inicio_sesion),
-    path('registro_postulante/', registro_postulante),
+    path('registro_postulantes/', registro_postulantes),
     path('lista_ofertas/', lista_ofertas),
     path('inicio_valido', inicio_valido),
     path('detalle_oferta/<int:oferta_id>/', detalle_oferta),
@@ -31,4 +31,5 @@ urlpatterns = [
     path('nomina/<int:empresa_id>/', nomina),
     path('registro_empresa/', registro_empresa),
     path('Lista_Usuarios/', panel_usuarios),
+    path('cerrar_sesion/',cerrar_sesion),
 ]

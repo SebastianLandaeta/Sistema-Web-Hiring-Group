@@ -3,44 +3,36 @@ import random
 import string
 
 def registrar_Utrabajador(user):
-    existe_cedula = Usuario.objects.filter(cedula=user[0]).exists()
-    existe_correo = Usuario.objects.filter(correo=user[3]).exists()
+    # Verificar si el correo ya está en uso
+    if Usuario.objects.filter(correo=[0]).exists():
+        raise ValueError('El correo ya está en uso.')
 
-    if existe_cedula or existe_correo:
-        return False
-    else:
-        usuario = Usuario(
-            cedula=user[0],
-            nombre=user[1],
-            apellido=user[2],
-            correo=user[3],
-            contraseña=user[4],
-            sexo=user[5],
-            telefono=user[6],
-            rol=user[7]
+    # Verificar si la cedula ya está en uso
+    if Usuario.objects.filter(cedula=user[2]).exists():
+        raise ValueError('La cedula ya está en uso.')
+
+    usuario = Usuario(
+        correo=user[0],
+        password=user[1],
+        cedula=user[2],
+        nombre=user[3],
+        apellido=user[4],
+        sexo=user[5],
+        telefono=user[6],
+        rol=user[7],
         )
 
-        utrabajador = UTrabajador(
+    utrabajador = UTrabajador(
             tipo_de_sangre=user[8],
             persona_de_contacto=user[9],
             numero_de_emergencia=user[10],
-            usuario_id=user[0]                 
+            usuario_id=user[2]                 
         )
 
-        usuario.save()
-        utrabajador.save()
-        return True
-    
-def validar_login(correo, contraseña):
-    try:
-        usuario = Usuario.objects.get(correo=correo)
-
-        if usuario.contraseña == contraseña:
-            return 1
-        else:
-            return 2
-    except Usuario.DoesNotExist:
-            return 3
+    usuario.save()
+    Usuario.objects.create_user(correo=user[0], contraseña=user[1])
+    utrabajador.save()
+    return True
     
 def identificar_rol(correo, contraseña):
     rol = Usuario.objects.get(rol=rol)
@@ -83,6 +75,7 @@ def registrar_empresa(nombre,sector):
 
 def registrar_Uempresa(user = Usuario,u_empresa = UEmpresa):
     user.save()
+    Usuario.objects.create_user(correo=user.correo, contraseña=user.password)
     u_empresa.save()
     
 def correo_existe(correo):
