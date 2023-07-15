@@ -58,18 +58,27 @@ def registro_postulantes(request):
         user.append(request.POST["contacto"])
         user.append(request.POST["numero_emergencia"])
 
+        areas_seleccionadas = request.POST.getlist('areas_de_conocimiento')
+
         if verificar_cedula(user[2]):
             error_message = 'Cédula ya existente.'
-            return render(request, "registro_postulantes.html", {'error_message': error_message})
+            areas_de_conocimiento = AreaDeConocimiento.objects.all()
+            return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento,error_message:' error_message'})
     
         elif verificar_correo(user[0]):
             error_message = 'Correo ya existente.'
-            return render(request, "registro_postulantes.html", {'error_message': error_message})
+            areas_de_conocimiento = AreaDeConocimiento.objects.all()
+            return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento,error_message:' error_message'})
         else:
-            registrar_Utrabajador(user)
+            trabajador_n=registrar_Utrabajador(user)
+
+            for area_id in areas_seleccionadas:
+                registrar_ac(area_id,trabajador_n)
+
             return render(request, "index.html")
 
-    return render(request, "registro_postulantes.html")
+    areas_de_conocimiento = AreaDeConocimiento.objects.all()
+    return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento})
 
 
 # muestra una lista de todas las ofertas disponibles
@@ -270,4 +279,45 @@ def inicio_ucontratado(request):
             return redirrecion(user.rol)
     
     return render(request, 'inicio_ucontratado.html')
+
+def ofertas_list(request):
+    ofertas = Oferta.objects.all()
+    if request.method == 'POST':
+        cargo_vacante = request.POST.get('cargo_vacante')
+        descripcion_del_cargo = request.POST.get('descripcion_del_cargo')
+        salario = request.POST.get('salario')
+        empresa_id = request.POST.get('empresa')
+        area_conocimiento_id = request.POST.get('area_de_conocimiento')
+
+        Oferta.objects.create(
+            cargo_vacante=cargo_vacante,
+            descripcion_del_cargo=descripcion_del_cargo,
+            salario=salario,
+            estado=True,
+            empresa_id=empresa_id,
+            area_de_conocimiento_id=area_conocimiento_id
+        )
+
+        return redirect('ofertas_list')
+
+    return render(request, 'ofertas.html', {'ofertas': ofertas})
+
+def eliminar_oferta(request, oferta_id):
+    Oferta.objects.filter(id=oferta_id).delete()
+    return redirect('ofertas_list')
+
+def editar_oferta(request, oferta_id):
+    oferta = Oferta.objects.get(id=oferta_id)
+
+    if request.method == 'POST':
+        oferta.cargo_vacante = request.POST.get('cargo_vacante')
+        oferta.descripcion_del_cargo = request.POST.get('descripcion_del_cargo')
+        oferta.salario = request.POST.get('salario')
+        oferta.empresa_id = request.POST.get('empresa')
+        oferta.area_de_conocimiento_id = request.POST.get('area_de_conocimiento')
+
+        oferta.save()
+        return redirect('ofertas_list')
+
+    return render(request, 'ofertas.html', {'oferta': oferta})
 

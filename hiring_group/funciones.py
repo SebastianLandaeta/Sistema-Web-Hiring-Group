@@ -39,6 +39,7 @@ def registrar_Utrabajador(user):
     usuario.save()
     Usuario.objects.create_user(correo=user[0], contraseña=user[1])
     utrabajador.save()
+    return utrabajador
     
 def verificar_existencia_empresa(nombre):
     existe_empresa = Empresa.objects.filter(nombre=nombre).exists()
@@ -129,3 +130,8 @@ def redirrecion(rol):
         return redirect('inicio contratado')
     elif rol==4: 
         return redirect('inicio empresa')
+    
+def registrar_ac(area_id,trabajador_n):
+    ultimo_id = AreaTrabajador.objects.latest("id").id if AreaTrabajador.objects.exists() else 0
+    area_trabajador = AreaTrabajador(id=ultimo_id+1,trabajador=trabajador_n, area_de_conocimiento_id=area_id)
+    area_trabajador.save()

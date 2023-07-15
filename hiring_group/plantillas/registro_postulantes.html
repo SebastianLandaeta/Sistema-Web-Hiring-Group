@@ -58,9 +58,21 @@
 
   <label for="numero_emergencia">Número de emergencia:</label>
   <input type="number" name="numero_emergencia" required>
-
-  <button type="submit">Guardar</button>
   <br>
+  <label>Áreas de Conocimiento:</label>
+  {% if areas_de_conocimiento %}
+  {% for area in areas_de_conocimiento %}
+      <br>
+      <input type="checkbox" name="areas_de_conocimiento" value="{{ area.id }}">
+      <label>{{ area.nombre }}: "{{ area.descripcion }}"</label>
+  {% endfor %}
+{% else %}
+  <p>No hay áreas de conocimiento registradas. Registre una nueva.</p>
+{% endif %}
+  <a href="{% url 'areas_de_conocimiento' %}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Registrar nueva area de conocimiento</a>
+  <br>
+  <button type="submit">Guardar</button>
+  
 </form>
 
 {% if error_message %}

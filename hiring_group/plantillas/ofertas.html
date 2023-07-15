@@ -1,0 +1,54 @@
+{% extends "header.html" %}
+
+{% block title %}Gestión de Ofertas de Trabajo{% endblock %}
+
+{% block content %}
+
+<h1>Gestión de Ofertas de Trabajo</h1>
+
+<h2>Nueva Oferta</h2>
+<form method="post" action="{% url 'ofertas_list' %}">
+    {% csrf_token %}
+    <label for="cargo_vacante">Cargo vacante:</label>
+    <input type="text" id="cargo_vacante" name="cargo_vacante" required><br><br>
+
+    <label for="descripcion_del_cargo">Descripción del cargo:</label>
+    <input type="text" id="descripcion_del_cargo" name="descripcion_del_cargo" required><br><br>
+
+    <label for="salario">Salario:</label>
+    <input type="number" id="salario" name="salario" required><br><br>
+
+    <label for="empresa">Empresa:</label>
+    <select id="empresa" name="empresa" required>
+        {% for empresa in empresas %}
+        <option value="{{ empresa.id }}">{{ empresa.nombre }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="area_de_conocimiento">Área de conocimiento:</label>
+    <select id="area_de_conocimiento" name="area_de_conocimiento" required>
+        {% for area in areas %}
+        <option value="{{ area.id }}">{{ area.nombre }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <input type="submit" value="Crear Oferta">
+</form>
+
+<h2>Ofertas Existentes</h2>
+<ul>
+    {% for oferta in ofertas %}
+    <li>
+        <strong>{{ oferta.cargo_vacante }}</strong> - {{ oferta.descripcion_del_cargo }}<br>
+        Salario: {{ oferta.salario }}<br>
+        Área: {{ oferta.area_de_conocimiento }}<br>
+        Empresa: {{ oferta.empresa }}<br>
+        <a href="{% url 'eliminar_oferta' oferta.id %}">Eliminar</a>
+        <a href="{% url 'editar_oferta' oferta.id %}">Editar</a>
+    </li>
+    {% empty %}
+    <li>No hay ofertas disponibles.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

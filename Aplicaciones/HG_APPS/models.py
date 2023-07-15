@@ -86,7 +86,7 @@ class AreaDeConocimiento(models.Model):
 
 class AreaTrabajador(models.Model):
     id = models.IntegerField(primary_key=True)
-    trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
+    trabajador = models.ForeignKey(UTrabajador, on_delete=models.CASCADE)
     area_de_conocimiento = models.ForeignKey(AreaDeConocimiento, on_delete=models.CASCADE)
 
     class Meta:
@@ -101,20 +101,6 @@ class Banco(models.Model):
     class Meta:
         db_table = 'Banco'
 
-
-class Contrato(models.Model):
-    id = models.IntegerField(primary_key=True)
-    fecha_inicio = models.DateField()
-    fecha_finalizacion = models.DateField(null=True)
-    salario = models.FloatField()
-    trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
-    oferta = models.ForeignKey('Oferta', on_delete=models.CASCADE)
-    banco = models.ForeignKey(Banco, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'Contrato'
-
-
 class Empresa(models.Model):
     id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
@@ -122,19 +108,6 @@ class Empresa(models.Model):
 
     class Meta:
         db_table = 'Empresa'
-
-
-class ExperienciaLaboral(models.Model):
-    id = models.IntegerField(primary_key=True)
-    fecha_inicio = models.DateField()
-    fecha_finalizacion = models.DateField()
-    cargo = models.CharField(max_length=50)
-    nombre = models.CharField(max_length=50)
-    trabajador = models.ForeignKey('UTrabajador', on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'Experiencia Laboral'
-
 
 class Oferta(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -147,6 +120,30 @@ class Oferta(models.Model):
 
     class Meta:
         db_table = 'Oferta'
+
+class Contrato(models.Model):
+    id = models.IntegerField(primary_key=True)
+    fecha_inicio = models.DateField()
+    fecha_finalizacion = models.DateField(null=True)
+    salario = models.FloatField()
+    trabajador = models.ForeignKey(UTrabajador, on_delete=models.CASCADE)
+    oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
+    banco = models.ForeignKey(Banco, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'Contrato'
+
+
+class ExperienciaLaboral(models.Model):
+    id = models.IntegerField(primary_key=True)
+    fecha_inicio = models.DateField()
+    fecha_finalizacion = models.DateField()
+    cargo = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50)
+    trabajador = models.ForeignKey(UTrabajador, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'Experiencia Laboral'
 
 
 class Postulacion(models.Model):
