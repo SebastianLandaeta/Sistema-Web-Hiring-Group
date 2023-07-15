@@ -36,4 +36,6 @@ urlpatterns = [
     path('registro_banco/',registro_banco),
     path('inicio_uempresa/',inicio_uempresa, name='inicio empresa'),
     path('inicio_upostulante/',inicio_upostulante, name='inicio postulante'),
+    path('inicio_ucontratado/',inicio_ucontratado, name='inicio contratado'),
+    path('inicio_hg/',inicio_uhg, name='inicio hg'),
 ]

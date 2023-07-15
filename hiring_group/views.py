@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from Aplicaciones.HG_APPS.models import *
 from hiring_group.funciones import *
 from django.contrib.auth import authenticate,login,logout,get_user
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # 1 forma de hacerlo
@@ -12,22 +12,6 @@ def index(request):
         User = request.user.nombre
         print(User)
     return render(request, "index.html")
-
-"""permite a los usuarios iniciar sesión con su correo electrónico y contraseña
-def inicio_sesion(request):
-    if request.method == "POST":
-        correo = request.POST["correo"]
-        contraseña = request.POST["contraseña"]
-        user = authenticate(correo=correo, contraseña=contraseña)
-        if user is not None:
-            # Iniciar sesión del usuario autenticado
-            login(request, user)
-            #return render(request, 'inicio_valido.html')
-        else:
-            error_message = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
-            return render(request, 'inicio_sesion.html', {'error_message': error_message})
-    
-    return render(request, 'inicio_sesion.html')"""
 
 def inicio_sesion(request):
     next_page = request.GET.get('next')
@@ -43,24 +27,13 @@ def inicio_sesion(request):
             if next_page:
                 return redirect(next_page)  # Redirigir al usuario a la página 'next' después de iniciar sesión
             else:
-                return redirect('inicio valido')  # Redirigir al usuario a la página de inicio válida
+                return redirrecion(user.rol)  # Redirigir al usuario a la página de inicio válida
 
         else:
             error_message = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
             return render(request, 'inicio_sesion.html', {'error_message': error_message})
 
     return render(request, 'inicio_sesion.html', {'next_page': next_page})
-
-
-
-
-
-
-
-
-
-
-
 
 
 def cerrar_sesion(request):
@@ -264,22 +237,37 @@ def inicio_uempresa(request):
     user = request.user
     if user.is_authenticated:
         if user.rol != 4:
-            messages.error(request, 'Usted no tiene acceso a esta página. Debe ser un usuario con el rol de Usuario Empresa.', extra_tags='access_denied')
-            if user.rol == 1:
-                return redirect('inicio hg')
-            elif user.rol == 2:
-                return redirect('inicio postulante')
-            elif user.rol == 3:
-                return redirect('inicio contratado')
+            messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario Empresa.', extra_tags='access_denied')
+            return redirrecion(user.rol)
     
     return render(request, 'inicio_uempresa.html')
 
-#Parte incomplenta la de abajo
 @login_required(login_url='login')
-@user_passes_test(lambda user: user.rol == 2)
 def inicio_upostulante(request):
-    if request.user.rol != 2:
-        messages.error(request, 'Usted no tiene acceso a esta página. Debe ser un usuario con el rol de Postulante.')
-        return redirect('')
-    else:
-        return render(request, 'inicio_upostulante.html')
+    user = request.user
+    if user.is_authenticated:
+        if user.rol != 2:
+            messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario postulante.', extra_tags='access_denied')
+            return redirrecion(user.rol)
+    
+    return render(request, 'inicio_upostulante.html')
+
+#@login_required(login_url='login')
+def inicio_uhg(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.rol != 1:
+            messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario Hiring Group.', extra_tags='access_denied')
+            return redirrecion(user.rol)
+    
+    return render(request, 'inicio_uhg.html')
+
+def inicio_ucontratado(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.rol != 3:
+            messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario contratado.', extra_tags='access_denied')
+            return redirrecion(user.rol)
+    
+    return render(request, 'inicio_ucontratado.html')
+

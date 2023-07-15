@@ -5,19 +5,12 @@
 {% block content %}
 
 <div class="container align-self-center">
-    <h2>Inicio de sesión</h2>
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        {% if 'login_required' in message.tags %}
-        <p class="info">{{ message }}</p>
-        {% elif 'access_denied' in message.tags %}
-        <p class="error">{{ message }}</p>
-        {% endif %}
-        {% endfor %}
-    </ul>
+    {% if next_page != none %}
+        <p>Primero loguese para acceder a la pagina</p>
     {% endif %}
+
+    <h2>Inicio de sesión</h2>
 
     <form method="POST">
         {% csrf_token %}

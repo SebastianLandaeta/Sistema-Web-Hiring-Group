@@ -1,6 +1,12 @@
 from Aplicaciones.HG_APPS.models import *
+from django.shortcuts import redirect
 import random
 import string
+
+    # Si el usuario es de tipo Hiring Group = 1
+    # Si el usuario es de tipo postulante = 2
+    # Si el usuario es de tipo contratado = 3
+    # Si el usuario es de tipo empresa = 4
 
 
 def verificar_correo(correo_u):
@@ -11,15 +17,7 @@ def verificar_correo(correo_u):
         return False
     
 def registrar_Utrabajador(user):
-    # Verificar si el correo ya está en uso
-    #if Usuario.objects.filter(correo=[0]).exists():
-        #raise ValueError('El correo ya está en uso.')
-        #return False
-    # Verificar si la cedula ya está en uso
-    #elif Usuario.objects.filter(cedula=user[2]).exists():
-        #raise ValueError('La cedula ya está en uso.')
-        #return False
-    #else:
+    
     usuario = Usuario(
     correo=user[0],
     password=user[1],
@@ -41,27 +39,7 @@ def registrar_Utrabajador(user):
     usuario.save()
     Usuario.objects.create_user(correo=user[0], contraseña=user[1])
     utrabajador.save()
-    #return True
     
-def identificar_rol(correo, contraseña):
-    rol = Usuario.objects.get(rol=rol)
-    
-    # Si el usuario es de tipo Hiring Group
-    if rol == 1:
-        return 1
-    
-    # Si el usuario es de tipo postulante
-    if rol == 2:
-        return 2
-    
-    # Si el usuario es de tipo contratado
-    if rol == 3:
-        return 3
-
-    # Si el usuario es de tipo empresa
-    if rol == 4:
-        return 4
-
 def verificar_existencia_empresa(nombre):
     existe_empresa = Empresa.objects.filter(nombre=nombre).exists()
     if existe_empresa:
@@ -142,14 +120,12 @@ def registrar_banco(nro_banco,nombre_b):
     nuevo_banco= Banco(nro_de_cuenta=nro_banco, nombre=nombre_b)
     nuevo_banco.save()
 
-def uhiring_check(user):
-    return user.is_authenticated and user.rol == 1
-
-def upostulante_check(user):
-    return user.is_authenticated and user.rol == 2
-
-def ucontratado_check(user):
-    return user.is_authenticated and user.rol == 3
-
-def uempresa_check(user):
-    return user.is_authenticated and user.rol == 4
+def redirrecion(rol):
+    if rol==1:
+        return redirect('inicio hg')   
+    elif rol==2:
+        return redirect('inicio postulante')
+    elif rol==3:
+        return redirect('inicio contratado')
+    elif rol==4: 
+        return redirect('inicio empresa')
