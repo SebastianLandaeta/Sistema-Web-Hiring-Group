@@ -17,17 +17,17 @@
 
                         <h4 class="m-4 text-center modal-title">Registro de Nueva Empresa</h4>
                         <div class="mx-3 p-1">
-                            <label for="Nombre_empresa" class="form-label">Nombre de la Empresa</label>
+                            <label for="nombreEmpresa" class="form-label">Nombre de la Empresa</label>
                             <input type="text" class="form-control" id="nombreEmpresa" name="Nombre_empresa" required>
                         </div>
                         <div class="mx-3 p-1">
-                            <label for="Sector_empresa" class="form-label">Sector de la Empresa</label>
+                            <label for="sectorEmpresa" class="form-label">Sector de la Empresa</label>
                             <input type="text" class="form-control" id="sectorEmpresa" name="Sector_empresa" required>
                         </div>
                         <div class="d-block text-center mx-auto my-5">
 
                             <span>Suministre los datos de usuario para la empresa provisional</span>
-                            <span><i>no se registrara la empresa sin usuario provisional</i></span>
+                            <span><i>no se registrará la empresa sin usuario provisional</i></span>
 
                             <button type="button" class="btn btn-outline-primary my-4" onclick="validarEmpresa()">
                                 Registro de U. Empresa
@@ -44,17 +44,14 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
 
-
                         <div class="modal-header">
                             <h5 class="modal-title" id="registroModalLabel">Registro de Nuevo Usuario</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="cedula" class="form-label">Cedula</label>
+                                <label for="cedula" class="form-label">Cédula</label>
                                 <input type="text" class="form-control" name="cedula" pattern="[0-9]*"
                                     inputmode="numeric" required>
                             </div>
@@ -83,7 +80,7 @@
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Registrar Usuario</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                         </div>
 
                     </div>
@@ -128,8 +125,6 @@
             {% endif %}
         </div>
 
-
-
         <div class="container-fluid">
             <div class="row">
 
@@ -154,18 +149,17 @@
 
 <script>
     function validarEmpresa() {
-        // Obtener los valores de los campos de nombre y sector de la empresa
-        var nombreEmpresa = document.getElementById("nombreEmpresa").value;
-        var sectorEmpresa = document.getElementById("sectorEmpresa").value;
+    var nombreEmpresa = document.getElementById("nombreEmpresa").value;
+    var sectorEmpresa = document.getElementById("sectorEmpresa").value;
 
-        // Verificar si los campos están vacíos
-        if (nombreEmpresa === "" || sectorEmpresa === "") {
-            alert("Por favor, complete los campos de Nombre de la Empresa y Sector de la Empresa antes de continuar.");
-        } else {
-            // Mostrar el modal de registro
-            $('#registroModal').modal('show');
-        }
+    if (nombreEmpresa === "" || sectorEmpresa === "") {
+        alert("Por favor, complete los campos de Nombre de la Empresa y Sector de la Empresa antes de continuar.");
+    } else {
+        var registroModal = new bootstrap.Modal(document.getElementById("registroModal"));
+        registroModal.show();
     }
+}
+
 </script>
 
 {% endblock %}

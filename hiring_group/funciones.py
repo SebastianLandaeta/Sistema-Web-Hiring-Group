@@ -2,6 +2,7 @@ from Aplicaciones.HG_APPS.models import *
 import random
 import string
 
+
 def verificar_correo(correo_u):
     existe_correo = Usuario.objects.filter(correo=correo_u).exists()
     if existe_correo:
@@ -140,3 +141,15 @@ def verificar_existencia_banco(nro_banco):
 def registrar_banco(nro_banco,nombre_b):
     nuevo_banco= Banco(nro_de_cuenta=nro_banco, nombre=nombre_b)
     nuevo_banco.save()
+
+def uhiring_check(user):
+    return user.is_authenticated and user.rol == 1
+
+def upostulante_check(user):
+    return user.is_authenticated and user.rol == 2
+
+def ucontratado_check(user):
+    return user.is_authenticated and user.rol == 3
+
+def uempresa_check(user):
+    return user.is_authenticated and user.rol == 4

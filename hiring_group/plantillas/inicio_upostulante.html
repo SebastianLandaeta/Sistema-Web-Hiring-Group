@@ -1,0 +1,21 @@
+{% extends "header.html" %}
+
+{% block title %} Inicio de sesión {% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {% if 'login_required' in message.tags %}
+    <p class="info">{{ message }}</p>
+    {% elif 'access_denied' in message.tags %}
+    <p class="error">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+<h1 class="text-center">ESTA VISTA ES SOLO VALIDA PARA UN USUARIO POSTULANTE</h1>
+{% endblock %}

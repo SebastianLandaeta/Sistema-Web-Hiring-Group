@@ -20,10 +20,10 @@ from hiring_group.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('inicio_sesion/', inicio_sesion),
+    path('inicio_sesion/', inicio_sesion, name='login'),
     path('registro_postulantes/', registro_postulantes),
     path('lista_ofertas/', lista_ofertas),
-    path('inicio_valido', inicio_valido),
+    path('inicio_valido', inicio_valido, name='inicio valido'),
     path('detalle_oferta/<int:oferta_id>/', detalle_oferta),
     path('postulacion/<int:oferta_id>/', postulacion),
     path('lista_postulaciones/', lista_postulaciones),
@@ -34,4 +34,6 @@ urlpatterns = [
     path('cerrar_sesion/',cerrar_sesion),
     path('registro_ac/',registro_area_conocimiento),
     path('registro_banco/',registro_banco),
+    path('inicio_uempresa/',inicio_uempresa, name='inicio empresa'),
+    path('inicio_upostulante/',inicio_upostulante, name='inicio postulante'),
 ]

@@ -5,11 +5,24 @@
 {% block content %}
 
 <div class="container align-self-center">
-    <h2>inicio sesión</h2>
+    <h2>Inicio de sesión</h2>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        {% if 'login_required' in message.tags %}
+        <p class="info">{{ message }}</p>
+        {% elif 'access_denied' in message.tags %}
+        <p class="error">{{ message }}</p>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
 
     <form method="POST">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next_page }}">
+        
         <div class="form-group">
             <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo electrónico"
                 name="correo">
