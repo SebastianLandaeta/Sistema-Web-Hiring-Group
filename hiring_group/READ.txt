@@ -66,3 +66,21 @@ Formato para crear plantillas:
 
 
     pablo.j345@elmejorequipodelmundo.com, contraseña: gzjufsa0
+
+
+
+
+
+
+     <!-- prueba -->
+{% if request.user.rol == 2 %}
+<div class="collapse navbar-collapse justify-content-end" id="navbarNav">   
+    <ul class="navbar-nav">
+       <a class="nav-link" href="/">Ofertas de empleos</a>
+       <a class="nav-link" href="/">Visualizar postulaciones</a>
+       <a class="nav-link" href="/">Modificar Curriculum</a>
+    </ul>   
+</div>
+
+{% endif %}
+ <!-- prueba -->

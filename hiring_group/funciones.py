@@ -121,7 +121,7 @@ def registrar_banco(nro_banco,nombre_b):
     nuevo_banco= Banco(nro_de_cuenta=nro_banco, nombre=nombre_b)
     nuevo_banco.save()
 
-def redirrecion(rol):
+def redirecion(rol):
     if rol==1:
         return redirect('inicio hg')   
     elif rol==2:

@@ -2,18 +2,23 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from Aplicaciones.HG_APPS.models import *
 from hiring_group.funciones import *
-from django.contrib.auth import authenticate,login,logout,get_user
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # 1 forma de hacerlo
 def index(request):
     if request.user.is_authenticated:
-        User = request.user.nombre
-        print(User)
+        User = request.user
+        return redirecion(User.rol)   
     return render(request, "index.html")
 
+
 def inicio_sesion(request):
+    if request.user.is_authenticated:
+        messages.error(request, 'usted ya esta logueado.', extra_tags='access_denied')
+        User = request.user
+        return redirecion(User.rol)  
     next_page = request.GET.get('next')
 
     if request.method == "POST":
@@ -27,7 +32,7 @@ def inicio_sesion(request):
             if next_page:
                 return redirect(next_page)  # Redirigir al usuario a la página 'next' después de iniciar sesión
             else:
-                return redirrecion(user.rol)  # Redirigir al usuario a la página de inicio válida
+                return redirecion(user.rol)  # Redirigir al usuario a la página de inicio válida
 
         else:
             error_message = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'
@@ -247,7 +252,7 @@ def inicio_uempresa(request):
     if user.is_authenticated:
         if user.rol != 4:
             messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario Empresa.', extra_tags='access_denied')
-            return redirrecion(user.rol)
+            return redirecion(user.rol)
     
     return render(request, 'inicio_uempresa.html')
 
@@ -257,7 +262,7 @@ def inicio_upostulante(request):
     if user.is_authenticated:
         if user.rol != 2:
             messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario postulante.', extra_tags='access_denied')
-            return redirrecion(user.rol)
+            return redirecion(user.rol)
     
     return render(request, 'inicio_upostulante.html')
 
@@ -267,7 +272,7 @@ def inicio_uhg(request):
     if user.is_authenticated:
         if user.rol != 1:
             messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario Hiring Group.', extra_tags='access_denied')
-            return redirrecion(user.rol)
+            return redirecion(user.rol)
     
     return render(request, 'inicio_uhg.html')
 
@@ -276,7 +281,7 @@ def inicio_ucontratado(request):
     if user.is_authenticated:
         if user.rol != 3:
             messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario contratado.', extra_tags='access_denied')
-            return redirrecion(user.rol)
+            return redirecion(user.rol)
     
     return render(request, 'inicio_ucontratado.html')
 

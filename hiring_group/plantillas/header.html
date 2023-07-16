@@ -15,20 +15,20 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <!-- Titulo -->
-        <a class="navbar-brand" href="/">
-            <h1>Hiring Group</h1>
-        </a>
-    
+                        <!-- Titulo -->
+                        <a class="navbar-brand" href="/">
+                            <h1>Hiring Group</h1>
+                        </a>
         <!-- Botón del menú desplegable -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-    
+
         <!-- Contenido del menú -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
+
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link">
@@ -60,7 +60,7 @@
             </ul>
         </div>
     </nav>
-    
+
     <!-- Contenido de la página -->
     <div class="container">
         {% block content %} {% endblock %}
