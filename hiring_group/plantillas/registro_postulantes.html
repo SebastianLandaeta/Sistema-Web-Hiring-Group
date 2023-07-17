@@ -59,24 +59,73 @@
   <label for="numero_emergencia">Número de emergencia:</label>
   <input type="number" name="numero_emergencia" required>
   <br>
-  <label>Áreas de Conocimiento:</label>
-  {% if areas_de_conocimiento %}
-  {% for area in areas_de_conocimiento %}
-      <br>
-      <input type="checkbox" name="areas_de_conocimiento" value="{{ area.id }}">
-      <label>{{ area.nombre }}: "{{ area.descripcion }}"</label>
-  {% endfor %}
-{% else %}
-  <p>No hay áreas de conocimiento registradas. Registre una nueva.</p>
-{% endif %}
-  <a href="{% url 'areas_de_conocimiento' %}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Registrar nueva area de conocimiento</a>
+
+
+  <input type="hidden" id="experiencia-counter" name="experiencia_counter" value="0">
+  <div id="formularios-container">
+    <!-- Aquí se agregarán los formularios dinámicos -->
+  </div>
+  <br>
+  
+  <button type="button" onclick="agregarFormulario()">Agregar Experiencia Laboral</button>
+  <br>
   <br>
   <button type="submit">Guardar</button>
-  
+
 </form>
 
 {% if error_message %}
 <p class="text-danger">{{ error_message }}</p>
 {% endif %}
+
+<script>
+  // Contador para asignar un índice único a cada formulario
+  var formCounter = 1;
+
+  // Función para agregar un nuevo formulario de experiencia laboral
+  function agregarFormulario() {
+    // Obtener el div contenedor de los formularios
+    var contenedor = document.getElementById("formularios-container");
+
+    // Crear un nuevo formulario
+    var nuevoFormulario = document.createElement("div");
+    nuevoFormulario.className = "experiencia-form";
+
+    // Generar los nombres únicos para los campos del formulario
+    var prefix = "experiencia-" + formCounter;
+    var fechaInicioName = prefix + "-fecha_inicio";
+    var fechaFinalizacionName = prefix + "-fecha_finalizacion";
+    var cargoName = prefix + "-cargo";
+    var nombreName = prefix + "-nombre";
+
+    // Agregar el contenido HTML del formulario
+    nuevoFormulario.innerHTML = `
+      <h4>Experiencia Laboral</h4>
+      <label for="${fechaInicioName}">Fecha de Inicio:</label>
+      <input type="date" name="${fechaInicioName}" required>
+      <br>
+
+      <label for="${fechaFinalizacionName}">Fecha de Finalización:</label>
+      <input type="date" name="${fechaFinalizacionName}" required>
+      <br>
+
+      <label for="${cargoName}">Cargo:</label>
+      <input type="text" name="${cargoName}" required>
+      <br>
+
+      <label for="${nombreName}">Nombre de la empresa:</label>
+      <input type="text" name="${nombreName}" required>
+      <br>
+    `;
+
+    // Agregar el nuevo formulario al contenedor
+    contenedor.appendChild(nuevoFormulario);
+
+    // Incrementar el contador para el próximo formulario
+    formCounter++;
+    document.getElementById("experiencia-counter").value = formCounter;
+
+  }
+</script>
 
 {% endblock %}

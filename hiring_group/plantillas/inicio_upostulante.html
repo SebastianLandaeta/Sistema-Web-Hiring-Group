@@ -7,25 +7,22 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    {% if 'access_denied' in message.tags %}
-    <p class="error">{{ message }}</p>
+    {% if 'success' in message.tags %}
+    <p class="success">{{ message }}</p>
     {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-        
-</a>
-{% if request.user.is_authenticated %}
 
-
-
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        {% if 'access_denied' in message.tags %}
+    <p class="error">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+</ul>
 {% endif %}
-</nav>
-
-
-
-
 
 <h1 class="text-center">ESTA VISTA ES SOLO VALIDA PARA UN USUARIO POSTULANTE</h1>
 <div class="panel">

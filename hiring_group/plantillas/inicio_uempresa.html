@@ -7,6 +7,26 @@
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
+    {% if 'success' in message.tags %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        {% if 'access_denied' in message.tags %}
+    <p class="error">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
     {% if 'access_denied' in message.tags %}
     <p class="error">{{ message }}</p>
     {% endif %}

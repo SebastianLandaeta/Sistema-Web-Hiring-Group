@@ -50,41 +50,81 @@ def inicio_valido(request):
 
 def registro_postulantes(request):
     if request.method == "POST":
-        user = list()
-        user.append(request.POST["correo"])
-        user.append(request.POST["contrasena"])
-        user.append(request.POST["cedula"])
-        user.append(request.POST["nombre"])
-        user.append(request.POST["apellido"])
-        user.append(request.POST["sexo"])
-        user.append(request.POST["telefono"])
-        user.append(2)
-        user.append(request.POST["tipo_sangre"])
-        user.append(request.POST["contacto"])
-        user.append(request.POST["numero_emergencia"])
+        user = [
+            request.POST["correo"],
+            request.POST["contrasena"],
+            request.POST["cedula"],
+            request.POST["nombre"],
+            request.POST["apellido"],
+            request.POST["sexo"],
+            request.POST["telefono"],
+            2,
+            request.POST["tipo_sangre"],
+            request.POST["contacto"],
+            request.POST["numero_emergencia"],
+        ]
 
-        areas_seleccionadas = request.POST.getlist('areas_de_conocimiento')
+        areas_seleccionadas = request.POST.getlist("areas_de_conocimiento")
 
         if verificar_cedula(user[2]):
-            error_message = 'Cédula ya existente.'
+            error_message = "Cédula ya existente."
             areas_de_conocimiento = AreaDeConocimiento.objects.all()
-            return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento,error_message:' error_message'})
-    
+            return render(
+                request,
+                "registro_postulantes.html",
+                {
+                    "areas_de_conocimiento": areas_de_conocimiento,
+                    "error_message": error_message,
+                },
+            )
+
         elif verificar_correo(user[0]):
-            error_message = 'Correo ya existente.'
+            error_message = "Correo ya existente."
             areas_de_conocimiento = AreaDeConocimiento.objects.all()
-            return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento,error_message:' error_message'})
+            return render(
+                request,
+                "registro_postulantes.html",
+                {
+                    "areas_de_conocimiento": areas_de_conocimiento,
+                    "error_message": error_message,
+                },
+            )
         else:
-            trabajador_n=registrar_Utrabajador(user)
+            trabajador_n = registrar_Utrabajador(user)
+
+            experiencia_counter = request.POST.get('experiencia_counter', '0')
+            numero_experiencias = int(experiencia_counter)-1
+
+            if numero_experiencias>0:
+                for i in range(1, numero_experiencias+1):
+                    fecha_inicio = request.POST[f'experiencia-{i}-fecha_inicio']
+                    fecha_finalizacion = request.POST[f'experiencia-{i}-fecha_finalizacion']
+                    cargo = request.POST[f'experiencia-{i}-cargo']
+                    nombre_empresa = request.POST[f'experiencia-{i}-nombre']
+
+                    ultimo_id = ExperienciaLaboral.objects.latest("id").id if ExperienciaLaboral.objects.exists() else 0
+                    # Crea una instancia del modelo de experiencia laboral y guarda los valores
+                    experiencia = ExperienciaLaboral(
+                        id = ultimo_id+1,
+                        fecha_inicio=fecha_inicio,
+                        fecha_finalizacion=fecha_finalizacion,
+                        cargo=cargo,
+                        nombre=nombre_empresa,
+                        trabajador=trabajador_n,
+                    )
+                    experiencia.save()
 
             for area_id in areas_seleccionadas:
-                registrar_ac(area_id,trabajador_n)
+                registrar_ac(area_id, trabajador_n)
 
             return render(request, "index.html")
 
     areas_de_conocimiento = AreaDeConocimiento.objects.all()
-    return render(request, 'registro_postulantes.html',{'areas_de_conocimiento': areas_de_conocimiento})
-
+    return render(
+        request,
+        "registro_postulantes.html",
+        {"areas_de_conocimiento": areas_de_conocimiento},
+    )
 
 # muestra una lista de todas las ofertas disponibles
 def lista_ofertas(request):
@@ -345,4 +385,84 @@ def editar_oferta(request, oferta_id):
         return redirect('ofertas_list')
 
     return render(request, 'editar_oferta.html', {'oferta': oferta, 'areas': ListaAc})
+
+@login_required(login_url='login')
+def modificar_usuario(request):
+    user = request.user
+    usuario_actual = Usuario.objects.get(cedula=request.user.cedula)
+
+    if user.rol==2:
+        experiencias = ExperienciaLaboral.objects.filter(trabajador=usuario_actual.utrabajador)
+    else:
+        experiencias=None
+
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        correo = request.POST['correo']
+        sexo = request.POST['sexo']
+        telefono = request.POST['telefono']
+
+        usuario = request.user
+        usuario.nombre = nombre
+        usuario.apellido = apellido
+        usuario.correo = correo
+        usuario.sexo = sexo
+        usuario.telefono = telefono
+        usuario.save()
+        contrasena_nueva = request.POST['contraseña']
+
+        print(contrasena_nueva)
+        print(contrasena_nueva != '')
+
+        if contrasena_nueva != '':
+            usuario = Usuario.objects.get(cedula=usuario.cedula)
+            nuevo_correo = correo
+            nueva_contraseña = contrasena_nueva
+            Usuario.objects.update_user_credentials(usuario, nuevo_correo, nueva_contraseña)
+
+        if usuario.rol == 2:
+            tipo_sangre = request.POST['tipo_de_sangre']
+            persona_contacto = request.POST['persona_contacto']
+            numero_emergencia = request.POST['numero_emergencia']
+            
+            usuario.utrabajador.tipo_de_sangre = tipo_sangre
+            usuario.utrabajador.persona_de_contacto = persona_contacto
+            usuario.utrabajador.numero_de_emergencia = numero_emergencia
+            usuario.utrabajador.save()
+
+            experiencias = ExperienciaLaboral.objects.filter(trabajador=usuario.utrabajador)
+            experiencias.delete()
+
+            experiencia_counter = request.POST.get('experiencia_counter', '0')
+            numero_experiencias = int(experiencia_counter)
+            print(f'------------------NUMERO DE EXPERIENCIAS--------------- {numero_experiencias}')
+            if numero_experiencias > 0:
+                for i in range(1, numero_experiencias + 1):
+                    print(f'------------------ITERACION--------------- {i}')
+                    fecha_inicio = request.POST.get(f'experiencia-{i}-fecha_inicio')
+                    fecha_finalizacion = request.POST.get(f'experiencia-{i}-fecha_finalizacion')
+                    cargo = request.POST.get(f'experiencia-{i}-cargo')
+                    nombre_empresa = request.POST.get(f'experiencia-{i}-nombre')
+                    print(f'------------------ITERACION SEGUNDA PARTE--------------- {i}')
+                    ultimo_id = ExperienciaLaboral.objects.latest("id").id if ExperienciaLaboral.objects.exists() else 0
+                    # Crear una nueva instancia de ExperienciaLaboral
+                    experiencia = ExperienciaLaboral(
+                        id=ultimo_id + 1,
+                        fecha_inicio=fecha_inicio,
+                        fecha_finalizacion=fecha_finalizacion,
+                        cargo=cargo,
+                        nombre=nombre_empresa,
+                        trabajador=usuario.utrabajador
+                    )
+                    experiencia.save()
+
+
+        messages.success(request, 'Los cambios se han guardado exitosamente.')
+        if contrasena_nueva != '':
+            user = authenticate(correo=correo, contraseña=contrasena_nueva)
+            login(request, user)
+        return redirecion(user.rol)
+
+    return render(request, 'modificar_usuario.html', {'usuario': usuario_actual, 'experiencias': experiencias})
 

@@ -18,6 +18,12 @@ class UsuarioManager(BaseUserManager):
         usuario.set_password(contraseña)
         usuario.save(using=self._db)
         return usuario
+    
+    def update_user_credentials(self, usuario, nuevo_correo, nueva_contraseña):
+        usuario.correo = nuevo_correo
+        usuario.set_password(nueva_contraseña)
+        usuario.save()
+        return usuario
 
 
     def create_superuser(self, cedula, nombre, apellido, correo, contraseña, sexo, telefono, rol):

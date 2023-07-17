@@ -30,7 +30,6 @@ urlpatterns = [
     path('contratacion/<int:oferta_id>/', contratacion),
     path('nomina/<int:empresa_id>/', nomina),
     path('registro_empresa/', registro_empresa),
-    path('Lista_Usuarios/', panel_usuarios),
     path('cerrar_sesion/',cerrar_sesion),
     path('registro_ac/', registro_area_conocimiento, name='areas_de_conocimiento'),
     path('registro_banco/',registro_banco),
@@ -41,4 +40,5 @@ urlpatterns = [
     path('ofertas/', ofertas_list, name='ofertas_list'),
     path('ofertas/eliminar/<int:oferta_id>/', eliminar_oferta, name='eliminar_oferta'),
     path('ofertas/editar/<int:oferta_id>/', editar_oferta, name='editar_oferta'),
+    path('modificar_usuario/',modificar_usuario,name='modificar_usuario'),
 ]

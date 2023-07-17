@@ -135,3 +135,13 @@ def registrar_ac(area_id,trabajador_n):
     ultimo_id = AreaTrabajador.objects.latest("id").id if AreaTrabajador.objects.exists() else 0
     area_trabajador = AreaTrabajador(id=ultimo_id+1,trabajador=trabajador_n, area_de_conocimiento_id=area_id)
     area_trabajador.save()
+
+def actualizar_usuario(cedula, nuevo_correo, nueva_contraseña):
+    try:
+        usuario = Usuario.objects.get(cedula=cedula)
+        usuario.correo = nuevo_correo
+        usuario.set_password(nueva_contraseña)
+        usuario.save()
+        return True
+    except Usuario.DoesNotExist:
+        return False

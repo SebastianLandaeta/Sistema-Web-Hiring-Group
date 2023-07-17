@@ -3,6 +3,27 @@
 {% block title %} Usuario HG {% endblock %}
 
 {% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {% if 'success' in message.tags %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        {% if 'access_denied' in message.tags %}
+    <p class="error">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
 <h1 class="text-center"> ESTA VISTA ES SOLO VALIDA PARA UN USUARIO HRIRNG GROUP </h1>
 <div class="panel">
     <h2 class="text-center">Panel de Usuario HG</h2>
@@ -12,7 +33,6 @@
         <a class="list-group-item" href="/">Creacion de empresa cliente</a>
         <a class="list-group-item" href="/">Contratacion de postulantes</a>
         <a class="list-group-item" href="/">Preparacion de Nomina mensual</a>
-
     </ul>
 </div>
 {% endblock %}

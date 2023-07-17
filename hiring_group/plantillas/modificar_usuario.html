@@ -1,0 +1,145 @@
+{% extends "header.html" %}
+
+{% block title %}Modificación de Datos Usuario{% endblock %}
+
+{% block content %}
+
+<h3>Modificar datos de usuario</h3>
+{% if request.user.is_authenticated %}
+<form method="POST" action="{% url 'modificar_usuario' %}">
+    {% csrf_token %}
+
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" value="{{ usuario.nombre }}" required>
+    <br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" name="apellido" value="{{ usuario.apellido }}" required>
+    <br>
+
+    <label for="correo">Correo:</label>
+    <input type="email" name="correo" value="{{ usuario.correo }}" required>
+    <br>
+
+    <label for="contraseña">Contraseña nueva(opcional):</label>
+    <input type="password" name="contraseña">
+    <br>
+
+    <label for="sexo">Sexo:</label>
+    <select name="sexo" required>
+        <option value="M" {% if usuario.sexo == "M" %}selected{% endif %}>Masculino</option>
+        <option value="F" {% if usuario.sexo == "F" %}selected{% endif %}>Femenino</option>
+    </select>
+    <br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="number" name="telefono" value="{{ usuario.telefono }}" required>
+    <br>
+
+    {% if usuario.rol == 2 %}
+    <label for="tipo_de_sangre">Tipo de sangre:</label>
+    <select name="tipo_de_sangre" required>
+        <option value="A+" {% if usuario.utrabajador.tipo_de_sangre == "A+" %}selected{% endif %}>A+</option>
+        <option value="A-" {% if usuario.utrabajador.tipo_de_sangre == "A-" %}selected{% endif %}>A-</option>
+        <option value="B+" {% if usuario.utrabajador.tipo_de_sangre == "B+" %}selected{% endif %}>B+</option>
+        <option value="B-" {% if usuario.utrabajador.tipo_de_sangre == "B-" %}selected{% endif %}>B-</option>
+        <option value="AB+" {% if usuario.utrabajador.tipo_de_sangre == "AB+" %}selected{% endif %}>AB+</option>
+        <option value="AB-" {% if usuario.utrabajador.tipo_de_sangre == "AB-" %}selected{% endif %}>AB-</option>
+        <option value="O+" {% if usuario.utrabajador.tipo_de_sangre == "O+" %}selected{% endif %}>O+</option>
+        <option value="O-" {% if usuario.utrabajador.tipo_de_sangre == "O-" %}selected{% endif %}>O-</option>
+    </select>
+    <br>
+
+    <label for="persona_contacto">Persona de contacto:</label>
+    <input type="number" name="persona_contacto" value="{{ usuario.utrabajador.persona_de_contacto }}" required>
+    <br>
+
+    <label for="numero_emergencia">Número de emergencia:</label>
+    <input type="number" name="numero_emergencia" value="{{ usuario.utrabajador.numero_de_emergencia }}" required>
+    <br>
+
+    {% for experiencia in experiencias %}
+    <div class="experiencia-form">
+
+        <h4>Experiencia Laboral</h4>
+        <label for="fecha_inicio">Fecha de Inicio:</label>
+        <input type="date" name="experiencia-{{ forloop.counter }}-fecha_inicio" value="{{ experiencia.fecha_inicio|date:"Y-m-d" }}" required>
+        <br>
+
+        <label for="fecha_finalizacion">Fecha de Finalización:</label>
+        <input type="date" name="experiencia-{{ forloop.counter}}-fecha_finalizacion" value="{{ experiencia.fecha_finalizacion|date:"Y-m-d" }}" required>
+        <br>
+
+        <label for="cargo">Cargo:</label>
+        <input type="text" name="experiencia-{{ forloop.counter }}-cargo" value="{{ experiencia.cargo }}" required>
+        <br>
+
+        <label for="nombre">Nombre de la empresa:</label>
+        <input type="text" name="experiencia-{{ forloop.counter }}-nombre" value="{{ experiencia.nombre }}" required>
+        <br>
+
+    </div>
+    {% endfor %}
+
+    <input type="hidden" id="experiencia-counter" name="experiencia_counter" value="{{ experiencias.count }}">
+    <div id="formularios-container">
+        <!-- Aquí se agregarán los formularios dinámicos -->
+    </div>
+    <br>
+    <button type="button" onclick="agregarFormulario()">Agregar Experiencia Laboral</button>
+    {% endif %}
+    <br>
+    <br>
+    <button type="submit">Guardar cambios</button>
+    {% endif %}
+</form>
+
+<script>
+    // Contador para asignar un índice único a cada formulario
+    var formCounter = 1+{{experiencias.count}};
+
+    // Función para agregar un nuevo formulario de experiencia laboral
+    function agregarFormulario() {
+        // Obtener el div contenedor de los formularios
+        var contenedor = document.getElementById("formularios-container");
+
+        // Crear un nuevo formulario
+        var nuevoFormulario = document.createElement("div");
+        nuevoFormulario.className = "experiencia-form";
+
+        // Generar los nombres únicos para los campos del formulario
+        var prefix = "experiencia-" + formCounter;
+        var fechaInicioName = prefix + "-fecha_inicio";
+        var fechaFinalizacionName = prefix + "-fecha_finalizacion";
+        var cargoName = prefix + "-cargo";
+        var nombreName = prefix + "-nombre";
+
+        // Agregar el contenido HTML del formulario
+        nuevoFormulario.innerHTML = `
+        <h4>Experiencia Laboral</h4>
+        <label for="${fechaInicioName}">Fecha de Inicio:</label>
+        <input type="date" name="${fechaInicioName}" required>
+        <br>
+  
+        <label for="${fechaFinalizacionName}">Fecha de Finalización:</label>
+        <input type="date" name="${fechaFinalizacionName}" required>
+        <br>
+  
+        <label for="${cargoName}">Cargo:</label>
+        <input type="text" name="${cargoName}" required>
+        <br>
+  
+        <label for="${nombreName}">Nombre de la empresa:</label>
+        <input type="text" name="${nombreName}" required>
+        <br>
+      `;
+
+        // Agregar el nuevo formulario al contenedor
+        contenedor.appendChild(nuevoFormulario);
+
+        // Incrementar el contador para el próximo formulario
+        formCounter++;
+        document.getElementById("experiencia-counter").value = formCounter-1;
+    }
+</script>
+{% endblock %}

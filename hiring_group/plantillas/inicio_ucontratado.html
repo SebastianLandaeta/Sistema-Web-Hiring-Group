@@ -3,6 +3,28 @@
 {% block title %} Usuario Contratado {% endblock %}
 
 {% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    {% if 'success' in message.tags %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        {% if 'access_denied' in message.tags %}
+    <p class="error">{{ message }}</p>
+        {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+
 <h1 class="text-center"> ESTA VISTA ES SOLO VALIDA PARA UN USUARIO CONTRATADO </h1>
 <div class="panel">
     <h2 class="text-center">Panel de Usuario Contratado</h2>
