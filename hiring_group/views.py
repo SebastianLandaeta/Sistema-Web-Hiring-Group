@@ -285,27 +285,43 @@ def inicio_ucontratado(request):
     
     return render(request, 'inicio_ucontratado.html')
 
+@login_required(login_url='login')
 def ofertas_list(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.rol != 4:
+            messages.error(request, 'Usted no tiene acceso a esa página. Debe ser un usuario con el rol de Usuario empresa.', extra_tags='access_denied')
+            return redirecion(user.rol)
+        
     ofertas = Oferta.objects.all()
+    ListaAc = AreaDeConocimiento.objects.all()
+    
+    if not ListaAc:
+        ListaAc=None
+
     if request.method == 'POST':
         cargo_vacante = request.POST.get('cargo_vacante')
         descripcion_del_cargo = request.POST.get('descripcion_del_cargo')
         salario = request.POST.get('salario')
-        empresa_id = request.POST.get('empresa')
         area_conocimiento_id = request.POST.get('area_de_conocimiento')
 
+        cedula = user.cedula
+        u_empresa = UEmpresa.objects.get(usuario=cedula)
+        ultimo_id = Oferta.objects.latest("id").id if Oferta.objects.exists() else 0
+
         Oferta.objects.create(
+            id=ultimo_id+1,
             cargo_vacante=cargo_vacante,
             descripcion_del_cargo=descripcion_del_cargo,
             salario=salario,
             estado=True,
-            empresa_id=empresa_id,
-            area_de_conocimiento_id=area_conocimiento_id
+            area_de_conocimiento_id=area_conocimiento_id,
+            empresa_id= u_empresa.empresa_id
         )
 
         return redirect('ofertas_list')
 
-    return render(request, 'ofertas.html', {'ofertas': ofertas})
+    return render(request, 'ofertas.html', {'ofertas': ofertas, 'areas': ListaAc})
 
 def eliminar_oferta(request, oferta_id):
     Oferta.objects.filter(id=oferta_id).delete()
@@ -314,15 +330,19 @@ def eliminar_oferta(request, oferta_id):
 def editar_oferta(request, oferta_id):
     oferta = Oferta.objects.get(id=oferta_id)
 
+    ListaAc = AreaDeConocimiento.objects.all()
+    
+    if not ListaAc:
+        ListaAc=None
+
     if request.method == 'POST':
         oferta.cargo_vacante = request.POST.get('cargo_vacante')
         oferta.descripcion_del_cargo = request.POST.get('descripcion_del_cargo')
         oferta.salario = request.POST.get('salario')
-        oferta.empresa_id = request.POST.get('empresa')
         oferta.area_de_conocimiento_id = request.POST.get('area_de_conocimiento')
 
         oferta.save()
         return redirect('ofertas_list')
 
-    return render(request, 'ofertas.html', {'oferta': oferta})
+    return render(request, 'editar_oferta.html', {'oferta': oferta, 'areas': ListaAc})
 

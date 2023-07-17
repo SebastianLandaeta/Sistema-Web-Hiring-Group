@@ -59,7 +59,7 @@ def registrar_empresa(nombre,sector):
     ultimo_id = Empresa.objects.latest("id").id if Empresa.objects.exists() else 0
     nueva_empresa = Empresa(id=ultimo_id + 1, nombre=nombre, sector=sector)
     nueva_empresa.save()
-    return nueva_empresa
+    return nueva_empresa    
 
 def registrar_Uempresa(user = Usuario,u_empresa = UEmpresa):
     user.save()

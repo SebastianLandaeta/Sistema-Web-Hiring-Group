@@ -56,7 +56,7 @@ ROOT_URLCONF = 'hiring_group.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/Sistema-Web-Hiring-Group/hiring_group/plantillas'],
+        'DIRS': ['C:/Hiring_Group/hiring_group/plantillas'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'hiring_group.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Haring-Group-DB',
+        'NAME': 'HG_DB',
         'USER' : 'postgres',
-        'PASSWORD' : 'password',
+        'PASSWORD' : '10572820',
         'HOST' : 'localhost',
         'DATABASE_PORT': '5432'
     }

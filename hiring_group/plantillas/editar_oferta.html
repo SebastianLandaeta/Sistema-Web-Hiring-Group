@@ -1,13 +1,13 @@
 {% extends "header.html" %}
 
-{% block title %}Gestión de Ofertas de Trabajo{% endblock %}
+{% block title %}Editar Ofertas de Trabajo{% endblock %}
 
 {% block content %}
 
 <h1>Gestión de Ofertas de Trabajo</h1>
 
-<h2>Nueva Oferta</h2>
-<form method="post" action="{% url 'ofertas_list' %}">
+<h2>Editar Oferta</h2>
+<form method="post" action="{% url 'editar_oferta' oferta.id %}">
     {% csrf_token %}
     <label for="cargo_vacante">Cargo vacante:</label>
     <input type="text" id="cargo_vacante" name="cargo_vacante" required><br><br>
@@ -25,23 +25,7 @@
         {% endfor %}
     </select><br><br>
 
-    <input type="submit" value="Crear Oferta">
+    <input type="submit" value="Guardar Cambios">
 </form>
-
-<h2>Ofertas Existentes</h2>
-<ul>
-    {% for oferta in ofertas %}
-    <li>
-        <strong>{{ oferta.cargo_vacante }}</strong> - {{ oferta.descripcion_del_cargo }}<br>
-        Salario: {{ oferta.salario }}<br>
-        Área: {{ oferta.area_de_conocimiento.nombre }}<br>
-        Empresa: {{ oferta.empresa.nombre }}<br>
-        <a href="{% url 'eliminar_oferta' oferta.id %}">Eliminar</a>
-        <a href="{% url 'editar_oferta' oferta.id %}">Editar</a>
-    </li>
-    {% empty %}
-    <li>No hay ofertas disponibles.</li>
-    {% endfor %}
-</ul>
 
 {% endblock %}
